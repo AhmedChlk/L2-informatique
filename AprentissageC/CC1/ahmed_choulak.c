@@ -2,9 +2,19 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 3
-#define TAB_TAILLE 9
+#define N 10
+#define TAB_TAILLE 100
 #define  C 6
+
+#define RESET_ALL    "\x1b[0m"
+#define NOIR        "\x1b[30m"
+#define ROUGE          "\x1b[31m"
+#define VERT        "\x1b[32m"
+#define JAUNE       "\x1b[33m"
+#define CYAN         "\x1b[36m"
+#define BLANC        "\x1b[37m"
+
+
 
 typedef struct{
     int couleur;
@@ -28,10 +38,36 @@ void remplir_grille (grille_t* tab){
         }
     }
 }
+void print_couleur(char* couleur){
+    printf("%s",couleur);
+    printf(" ■ ");
+    printf("%s",RESET_ALL);
+
+}
 void afficher_grille(grille_t tab){
         for(int i = 0 ; i<N;i++){
         for(int j=0;j<N;j++){
-            printf("%d ",tab.grille[i][j].couleur);
+            switch(tab.grille[i][j].couleur){
+                case 0:
+                    print_couleur(ROUGE);
+                    break;
+                case 1:
+                    print_couleur(BLANC);
+                    break;
+                case 2:
+                    print_couleur(JAUNE);
+                    break;
+                case 3:
+                    print_couleur(CYAN);
+                    break;
+                case 4:
+                    print_couleur(VERT);
+                    break;
+                case 5:
+                    print_couleur(NOIR);
+                    break;
+
+            }
         }
         printf("\n");
     }
@@ -43,8 +79,6 @@ void initialiser (position_t* T){
         T[i].c = -1;
     }
 }
-
-
 void ajouter (position_t* T , position_t p){
     int i=0;
     while (i < TAB_TAILLE && T[i].l != -1 && T[i].c != -1) {
@@ -69,14 +103,15 @@ position_t retirer (position_t* T){
     T[TAB_TAILLE - 1].c = -1;
     T[TAB_TAILLE - 1].l = -1;
     return p; 
- }
+}
 void afficher (position_t* T){
     int i = 0;
     while( i< TAB_TAILLE && T[i].l != -1 && T[i].c != -1){
         printf("%d %d \n",T[i].l,T[i].c);
         i++;
     }
-}int taille_region_adjacente(grille_t G, position_t* T) {
+}
+int taille_region_adjacente(grille_t G, position_t* T) {
     position_t p = {0, 0};
     int taille_region = 0;
     int couleur_initiale = G.grille[0][0].couleur;
@@ -111,7 +146,6 @@ void afficher (position_t* T){
             G.grille[p.l - 1][p.c].traitee = 1;  
         }
     }
-    
     return taille_region;
 }
 
@@ -157,10 +191,12 @@ void jouer_floodit(grille_t* G,position_t* T,int nombre_coup){
         printf("taille region adjacente : %d\n",taille_region_adjacente(*G,T));
         printf("voici la grille et il vous reste %d : \n",nombre_coup-nombre_coup_jouee);
         afficher_grille(*G);
-        printf("entrez la couleur que vous voulez(entre 0 et 5) : ");
+        printf("entrez la couleur que vous voulez(entre 0 et 5) : \n 0 pour %s ROUGE %s\n 1 pour %s BLANC %s \n 2 pour %s JAUNE %s\n 3 pour %s CYAN %s\n 4 pour %s VERT %s\n 5 pour %s NOIR %s\n",ROUGE,RESET_ALL,BLANC,RESET_ALL,JAUNE,RESET_ALL,CYAN,RESET_ALL,VERT,RESET_ALL,NOIR,RESET_ALL);
         while(scanf("%d",&couleur_choisie)!= 1 && couleur_choisie >= 0 && couleur_choisie <= 0){
             printf("erreur entrez une coouleur valide \n");
-            printf("entrez la couleur que vous voulez(entre 0 et 5) : ");
+            printf("entrez la couleur que vous voulez(entre 0 et 5) : \n 0 pour %s ROUGE %s\n 1 pour %s BLANC %s \n 2 pour %s JAUNE %s\n 3 pour %s CYAN %s\n 4 pour %s VERT %s\n 5 pour %s NOIR %s\n",ROUGE,RESET_ALL,BLANC,RESET_ALL,JAUNE,RESET_ALL,CYAN,RESET_ALL,VERT,RESET_ALL,NOIR,RESET_ALL);
+
+
         }
         modifier_couleur(T,G,couleur_choisie);
         reset_traitement(G);
@@ -175,11 +211,11 @@ void jouer_floodit(grille_t* G,position_t* T,int nombre_coup){
     }
 }
 int main(){
+    srand(time(NULL));
     grille_t Floodit;
     position_t T[TAB_TAILLE];
     remplir_grille(&Floodit);
     initialiser(T);
     jouer_floodit(&Floodit,T,10);
-
     return 0;
 }
