@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 4
-#define TAB_TAILLE 16
+#define N 3
+#define TAB_TAILLE 9
 
 
 #define RESET_ALL    "\x1b[0m"
@@ -224,7 +224,7 @@ int calculer_simulation_region_adjacente(grille_t G,position_t* T,int couleur_ch
     return taille_region_adjacente(G,T);
     
 }
-int retourner_indice_meilleur_region(int* tab){
+int retourner_indice_max(int* tab){
     int max=tab[0],indice_max = 0;
     for(int i=1;i<COULEUR_MAX;i++){
         if(tab[i]> max){
@@ -246,8 +246,8 @@ int algo_glouton_approche1(grille_t G,position_t* T,int nombre_coup,int* solutio
             resultatSimulation[i]=calculer_simulation_region_adjacente(G,T,i);
             //printf("DEBUG : resultat couleur : %d , taille region adjacente : %d\n",i,resultatSimulation[i]);
         }
-        solutions[nombre_coup_jouee] = retourner_indice_meilleur_region(resultatSimulation);
-        modifier_couleur(T,&G,retourner_indice_meilleur_region(resultatSimulation));
+        solutions[nombre_coup_jouee] = retourner_indice_max(resultatSimulation);
+        modifier_couleur(T,&G,retourner_indice_max(resultatSimulation));
         reset_traitement(&G);
         //printf("DEBUG : coup %d : couleur coisie : %d\n",nombre_coup_jouee+1,solutions[nombre_coup_jouee]);
         nombre_coup_jouee++;
@@ -262,6 +262,99 @@ int algo_glouton_approche1(grille_t G,position_t* T,int nombre_coup,int* solutio
         return 0;
 
 }
+void recup_tab_region_adjacente(grille_t G,position_t* T, position_t* region) {
+    position_t p = {0, 0}; // Départ en (0,0)
+    int couleur_initiale = G.grille[0][0].couleur; // Couleur de départ
+    ajouter(T, p);  // Ajoute la première position à la pile/queue
+    G.grille[p.l][p.c].traitee = 1; // Marque la première cellule comme traitée
+
+    
+    while (T[0].l != -1 && T[0].c != -1) {
+        p = retirer(T);  // Retire une position de la pile/queue
+        ajouter(region, p);  // Ajoute cette position à la région adjacente
+
+        // Vérification des voisins (droite, gauche, bas, haut)
+        if (p.c + 1 < N && G.grille[p.l][p.c + 1].couleur == couleur_initiale && G.grille[p.l][p.c + 1].traitee == 0) {
+            ajouter(T, (position_t){p.l, p.c + 1});
+            G.grille[p.l][p.c + 1].traitee = 1;  
+        }
+
+        if (p.c - 1 >= 0 && G.grille[p.l][p.c - 1].couleur == couleur_initiale && G.grille[p.l][p.c - 1].traitee == 0) {
+            ajouter(T, (position_t){p.l, p.c - 1});
+            G.grille[p.l][p.c - 1].traitee = 1;  
+        }
+
+        if (p.l + 1 < N && G.grille[p.l + 1][p.c].couleur == couleur_initiale && G.grille[p.l + 1][p.c].traitee == 0) {
+            ajouter(T, (position_t){p.l + 1, p.c});
+            G.grille[p.l + 1][p.c].traitee = 1;  
+        }
+
+        if (p.l - 1 >= 0 && G.grille[p.l - 1][p.c].couleur == couleur_initiale && G.grille[p.l - 1][p.c].traitee == 0) {
+            ajouter(T, (position_t){p.l - 1, p.c});
+            G.grille[p.l - 1][p.c].traitee = 1;  
+        }
+    }
+}
+int calculer_frontiere_couleur(grille_t G,position_t* T,int couleur){
+    position_t region_adjacente[TAB_TAILLE];
+    position_t p;
+    initialiser(region_adjacente);
+    recup_tab_region_adjacente(G,T,region_adjacente);
+    int compteur_couleur = 0;
+    for (int i=0;i<taille_region_adjacente(G,T);i++){
+        p = retirer(region_adjacente);
+
+        if (p.c + 1 < N && G.grille[p.l][p.c + 1].couleur == couleur && G.grille[p.l][p.c + 1].traitee == 0) {
+            compteur_couleur++;
+            G.grille[p.l][p.c + 1].traitee = 1;  
+        }
+
+        if (p.c - 1 >= 0 && G.grille[p.l][p.c - 1].couleur == couleur && G.grille[p.l][p.c - 1].traitee == 0) {
+            compteur_couleur++;
+            G.grille[p.l][p.c - 1].traitee = 1;  
+        }
+
+        if (p.l + 1 < N && G.grille[p.l + 1][p.c].couleur == couleur && G.grille[p.l + 1][p.c].traitee == 0) {
+            compteur_couleur++;
+            G.grille[p.l + 1][p.c].traitee = 1;  
+        }
+
+        if (p.l - 1 >= 0 && G.grille[p.l - 1][p.c].couleur == couleur && G.grille[p.l - 1][p.c].traitee == 0) {
+            compteur_couleur++;
+            G.grille[p.l - 1][p.c].traitee = 1;  
+        }
+    }
+    return compteur_couleur;
+    
+    
+}
+int algo_glouton_approche2(grille_t G, position_t* T, int nombre_coup, int* solutions_grille, int* nombre_coup_necessaire) {
+    int solutions[nombre_coup];
+    int nombre_coup_jouee = 0;
+    int resultat_frontiere [COULEUR_MAX];
+    
+    // Tant qu'il reste des coups et que la région adjacente ne couvre pas toute la grille
+    while (nombre_coup_jouee < nombre_coup && taille_region_adjacente(G, T) != TAB_TAILLE) {
+        for(int i=0;i<COULEUR_MAX;i++){
+            resultat_frontiere[i]=calculer_frontiere_couleur(G,T,i);
+        }
+        solutions[nombre_coup_jouee] = retourner_indice_max(resultat_frontiere);
+        modifier_couleur(T,&G,retourner_indice_max(resultat_frontiere));
+        reset_traitement(&G);
+        nombre_coup_jouee++;
+    }
+
+    
+    if (taille_region_adjacente(G, T) == TAB_TAILLE) {
+        for (int i = 0; i < nombre_coup_jouee; i++)
+            solutions_grille[i] = solutions[i];
+        *nombre_coup_necessaire = nombre_coup_jouee;
+        return 1; 
+    } else {
+        return 0;
+    }
+}
+
 int main(){
     srand(time(NULL));
     grille_t Floodit;
@@ -270,12 +363,22 @@ int main(){
     remplir_grille(&Floodit);
     initialiser(T);
     int solutions_grille[10];
+    int solutions_grille2[10];
+    printf("solution algo 1 : \n");
     if(algo_glouton_approche1(Floodit,T,10,solutions_grille,&nombre_coup_necessaire)){
+        for(int i=0;i<nombre_coup_necessaire;i++){
+            printf("%d ",solutions_grille[i]);
+        }
+    }else{
+        printf("solution impossible \n");
+    }
+    printf("\nsolution algo 2 : \n");
+    if(algo_glouton_approche1(Floodit,T,10,solutions_grille2,&nombre_coup_necessaire)){
         for(int i=0;i<nombre_coup_necessaire;i++){
             printf("%d ",solutions_grille[i]);
         }
     }else
         printf("solution impossible \n");
-    jouer_floodit(&Floodit,T,10);
+
     return 0;
 }
