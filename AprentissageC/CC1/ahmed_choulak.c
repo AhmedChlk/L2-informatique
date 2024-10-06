@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 10
-#define TAB_TAILLE 100
-#define  C 6
+#define N 4
+#define TAB_TAILLE 16
+
 
 #define RESET_ALL    "\x1b[0m"
 #define NOIR        "\x1b[30m"
@@ -14,6 +14,15 @@
 #define CYAN         "\x1b[36m"
 #define BLANC        "\x1b[37m"
 
+typedef enum {
+    COULEUR_ROUGE,
+    COULEUR_BLANC,
+    COULEUR_JAUNE,
+    COULEUR_CYAN,
+    COULEUR_VERT,
+    COULEUR_NOIR,
+    COULEUR_MAX
+} couleur_t;
 
 
 typedef struct{
@@ -33,7 +42,7 @@ typedef struct{
 void remplir_grille (grille_t* tab){
     for(int i = 0 ; i<N;i++){
         for(int j=0;j<N;j++){
-            tab->grille[i][j].couleur = rand() % C;
+            tab->grille[i][j].couleur = rand() % COULEUR_MAX;
             tab->grille[i][j].traitee = 0;
         }
     }
@@ -48,22 +57,22 @@ void afficher_grille(grille_t tab){
         for(int i = 0 ; i<N;i++){
         for(int j=0;j<N;j++){
             switch(tab.grille[i][j].couleur){
-                case 0:
+                case COULEUR_ROUGE:
                     print_couleur(ROUGE);
                     break;
-                case 1:
+                case COULEUR_BLANC:
                     print_couleur(BLANC);
                     break;
-                case 2:
+                case COULEUR_JAUNE:
                     print_couleur(JAUNE);
                     break;
-                case 3:
+                case COULEUR_CYAN:
                     print_couleur(CYAN);
                     break;
-                case 4:
+                case COULEUR_VERT:
                     print_couleur(VERT);
                     break;
-                case 5:
+                case COULEUR_NOIR:
                     print_couleur(NOIR);
                     break;
 
@@ -83,7 +92,6 @@ void ajouter (position_t* T , position_t p){
     int i=0;
     while (i < TAB_TAILLE && T[i].l != -1 && T[i].c != -1) {
         if (T[i].l == p.l && T[i].c == p.c) {
-            printf("La valeur existe déjà dans le tableau\n");
             return;
         }
         i++;
@@ -210,12 +218,64 @@ void jouer_floodit(grille_t* G,position_t* T,int nombre_coup){
         printf("vous avez perdue\n");
     }
 }
+int calculer_simulation_region_adjacente(grille_t G,position_t* T,int couleur_choisie){
+    modifier_couleur(T,&G,couleur_choisie);
+    reset_traitement(&G);
+    return taille_region_adjacente(G,T);
+    
+}
+int retourner_indice_meilleur_region(int* tab){
+    int max=tab[0],indice_max = 0;
+    for(int i=1;i<COULEUR_MAX;i++){
+        if(tab[i]> max){
+            max = tab[i];
+            indice_max = i;
+        }
+    }
+    return indice_max;
+
+}
+
+int algo_glouton_approche1(grille_t G,position_t* T,int nombre_coup,int* solutions_grille,int* nombre_coup_necessaire){
+    int solutions[nombre_coup];
+    int resultatSimulation[COULEUR_MAX];
+    int nombre_coup_jouee =0;
+    while(nombre_coup_jouee < nombre_coup && taille_region_adjacente(G,T)!= TAB_TAILLE){
+        //printf("COUP %d : \n\n",nombre_coup_jouee+1);
+        for(int i=0;i<COULEUR_MAX;i++){
+            resultatSimulation[i]=calculer_simulation_region_adjacente(G,T,i);
+            //printf("DEBUG : resultat couleur : %d , taille region adjacente : %d\n",i,resultatSimulation[i]);
+        }
+        solutions[nombre_coup_jouee] = retourner_indice_meilleur_region(resultatSimulation);
+        modifier_couleur(T,&G,retourner_indice_meilleur_region(resultatSimulation));
+        reset_traitement(&G);
+        //printf("DEBUG : coup %d : couleur coisie : %d\n",nombre_coup_jouee+1,solutions[nombre_coup_jouee]);
+        nombre_coup_jouee++;
+    }
+    if(taille_region_adjacente(G,T)== TAB_TAILLE){
+        for(int i = 0;i<nombre_coup_jouee;i++)
+            solutions_grille[i]=solutions[i];
+        *nombre_coup_necessaire = nombre_coup_jouee;
+        return 1;
+    }
+    else 
+        return 0;
+
+}
 int main(){
     srand(time(NULL));
     grille_t Floodit;
     position_t T[TAB_TAILLE];
+    int nombre_coup_necessaire=0;
     remplir_grille(&Floodit);
     initialiser(T);
+    int solutions_grille[10];
+    if(algo_glouton_approche1(Floodit,T,10,solutions_grille,&nombre_coup_necessaire)){
+        for(int i=0;i<nombre_coup_necessaire;i++){
+            printf("%d ",solutions_grille[i]);
+        }
+    }else
+        printf("solution impossible \n");
     jouer_floodit(&Floodit,T,10);
     return 0;
 }
