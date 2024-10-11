@@ -11,8 +11,8 @@ int longueurChaine (char* chaine){
 }
 
 int main(){
-    char chaine[255],chaineCryptee[255],temp;
-    int decalement,decalementSave,len,i=0;
+    char chaine[255];//chaineCryptee[255]//,temp,decalementSave;
+    int decalement,len,i=0;
     printf("entrez votre chaine de caractere :");
     fgets(chaine,255,stdin);
     len = longueurChaine(chaine);
@@ -23,9 +23,9 @@ int main(){
         printf("erreur entrez un decalement valide .\n");
         while(getchar() != '\n');
     }
-    decalementSave= decalement;
+    //decalementSave= decalement;
     while(chaine[i]!='\0'){
-        decalement= decalementSave;
+        /*decalement= decalementSave;
         if(chaine[i]>= 'a' && chaine[i]<= 'z'){
             temp = chaine[i];
             do{
@@ -46,9 +46,24 @@ int main(){
         }
         else{
             chaineCryptee[i] = chaine[i];
-        }
+        }*/
+/*
+        if(chaine[i]>= 'a' && chaine[i]<= 'z')
+              chaine[i] =(chaine[i] - 'a' + decalement ) % ('z'-'a'+1) + 'a';
+        else if(chaine[i]>= 'A' && chaine[i]<= 'Z')
+            chaine[i] =(chaine[i] - 'A' + decalement ) % ('Z'-'A'+1) + 'A';
+*/
+        char KA,KZ;
+        if(chaine[i]>= 'a' && chaine[i]<= 'z')
+            {KA = 'a'; KZ='z';}
+            //  chaine[i] =(chaine[i] - 'a' + decalement ) % ('z'-'a'+1) + 'a';
+        else if(chaine[i]>= 'A' && chaine[i]<= 'Z')
+            {KA = 'A'; KZ='Z';}
+            //chaine[i] =(chaine[i] - 'A' + decalement ) % ('Z'-'A'+1) + 'A';
+        chaine[i] =(chaine[i] - K + decalement ) % (KZ-KA+1) + K;
+        
         i++;
     }
-    printf("%s  devient :  %s \n",chaine,chaineCryptee);
+    printf("chaine cryptee : %s \n",chaine);
     return 0;
 }

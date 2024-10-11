@@ -3,8 +3,9 @@
 void capitalize(char* chaine){
     int i =0;
     while(chaine[i] != '\0'){
-        if ((chaine[i] >= 'a' && chaine[i]<= 'z') || (chaine[i] >= 'A' && chaine[i]<= 'Z')){
-            chaine[i] -= 32;
+        if ((chaine[i] >= 'a' && chaine[i]<= 'z')){
+            //chaine[i] -= 32;
+            chaine[i] = chaine[i] + ('A' - 'a');
         }
         i++;
     }
