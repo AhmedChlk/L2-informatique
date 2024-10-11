@@ -60,7 +60,7 @@ int main(){
         else if(chaine[i]>= 'A' && chaine[i]<= 'Z')
             {KA = 'A'; KZ='Z';}
             //chaine[i] =(chaine[i] - 'A' + decalement ) % ('Z'-'A'+1) + 'A';
-        chaine[i] =(chaine[i] - K + decalement ) % (KZ-KA+1) + K;
+        chaine[i] =(chaine[i] - KA + decalement ) % (KZ-KA+1) + KA;
         
         i++;
     }
