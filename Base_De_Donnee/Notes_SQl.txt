@@ -1,0 +1,89 @@
+2. Configuration de l'utilisateur root
+
+    Initialement, le mot de passe pour l'utilisateur root n'était pas configuré.
+    Tu as utilisé la commande suivante pour définir un mot de passe pour root :
+
+    sql
+
+    ALTER USER 'root'@'localhost' IDENTIFIED BY 'Ahmed2004_';
+
+    Si l'utilisateur root était configuré pour utiliser le plugin auth_socket, cela te permettait de te connecter sans mot de passe via sudo mysql.
+
+3. Création d'un nouvel utilisateur 
+
+    Tu as tenté de créer un nouvel utilisateur nommé ahmed avec la commande :
+
+    sql
+
+    CREATE USER 'ahmed'@'localhost' IDENTIFIED BY 'Ahmed2004_';
+
+    Il était important de s'assurer d'utiliser des guillemets simples (') et non des guillemets typographiques (’).
+
+4. Vérification des utilisateurs
+
+    Pour vérifier les utilisateurs existants dans MySQL, tu as utilisé la commande :
+
+    sql
+
+    SELECT user, host FROM mysql.user;
+
+    Cette commande te permet de voir tous les utilisateurs et leurs hôtes dans la base de données.
+
+5. Gestion des privilèges
+
+    Pour accorder des privilèges à un utilisateur, tu peux utiliser la commande suivante :
+
+    sql
+
+GRANT ALL PRIVILEGES ON *.* TO 'ahmed'@'localhost' WITH GRANT OPTION;
+
+Après avoir modifié les utilisateurs ou les privilèges, il est conseillé de recharger les privilèges avec :
+
+sql
+
+    FLUSH PRIVILEGES;
+
+6. Autres commandes utiles
+
+    Pour voir les privilèges d'un utilisateur spécifique, utilise :
+
+    sql
+
+
+SHOW GRANTS FOR 'nom_utilisateur'@'host';
+
+3. Création et Gestion des Bases de Données et Tables
+
+    Création d'une base de données : Utilisation de CREATE DATABASE.
+    Sélection de la base de données : USE nom_de_la_base;.
+    Création de tables : Utilisation de CREATE TABLE pour définir les colonnes, types de données, clés primaires et étrangères.
+
+4. Clés Primaires et Étrangères
+
+    Clé primaire : Un attribut ou un groupe d'attributs qui identifie de manière unique chaque enregistrement dans une table.
+    Clé étrangère : Un attribut qui crée une relation entre deux tables en référant à la clé primaire d'une autre table.
+
+5. Modifications des Tables
+
+    Ajouter une colonne : Utilisation de ALTER TABLE ... ADD COLUMN.
+    Modifier une colonne : Utilisation de ALTER TABLE ... MODIFY COLUMN.
+    Supprimer une colonne : Utilisation de ALTER TABLE ... DROP COLUMN.
+
+6. Suppression des Tables
+
+    Suppression d'une table : Utilisation de DROP TABLE nom_de_la_table. Attention aux contraintes de clés étrangères qui peuvent empêcher cette opération.
+
+7. Affichage des Tables
+
+    Afficher les tables d'une base : Utilisation de SHOW TABLES;.
+    Décrire une table : Utilisation de DESCRIBE nom_de_la_table; pour obtenir des informations détaillées sur les colonnes et leurs types.
+
+8. Gestion des Contraintes de Clé Étrangère
+
+    Supprimer une clé étrangère : Utilisation de ALTER TABLE ... DROP FOREIGN KEY nom_contrainte.
+    Identifying Foreign Keys: Utilisation de information_schema.KEY_COLUMN_USAGE pour trouver les clés étrangères.
+
+9. Valeurs par Défaut et Contraintes
+
+    Valeur par défaut : Définition d'une valeur par défaut lors de la création de colonnes, par exemple, noteCC FLOAT DEFAULT 0.
+    Constraints: Utilisation de NOT NULL pour garantir que certaines colonnes doivent toujours avoir une valeur.
