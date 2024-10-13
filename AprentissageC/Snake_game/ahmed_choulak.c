@@ -1,8 +1,11 @@
 #include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
 
-const int LIGNES_GRILLE = 10;
-const int COLONNES_GRILLE = 10;
-#define TAILLE_GRILLE 100
+#define TAILLE_GRILLE 400
+#define NOMBRE_POMMES 6
+const int LIGNES_GRILLE = 20;
+const int COLONNES_GRILLE = 20;
 
 typedef enum{
     NORD,
@@ -90,23 +93,26 @@ serpent_t creer_serpent(position_t tete_serpent, direction_t d, int longueur) {
     return serpent;
 }
 
-void afficher_grille (char grille[LIGNES_GRILLE][COLONNES_GRILLE],serpent_t s) {
+void afficher_grille (char grille[LIGNES_GRILLE][COLONNES_GRILLE],serpent_t s,position_t* pommes) {
     for(int i = 0;i<LIGNES_GRILLE;i++){
         for(int j=0;j<COLONNES_GRILLE;j++){
             grille[i][j] = '.';
         }
     }
     for(int i = 0; i<s.longueur;i++){
-        if(i == s.longueur){
-            grille[s.position_serpent[i].l][s.position_serpent[i].c] = 'T';   
+        if(i == s.longueur -1){
+            grille[s.position_serpent[i].l][s.position_serpent[i].c] = '+';   
         }
         else{
-            grille[s.position_serpent[i].l][s.position_serpent[i].c] = 'S';
+            grille[s.position_serpent[i].l][s.position_serpent[i].c] = '|';
         }
+    }
+    for(int i = 0; i<NOMBRE_POMMES;i++){
+            grille[pommes[i].l][pommes[i].c] = 'o';   
     }
         for(int i = 0;i<LIGNES_GRILLE;i++){
             for(int j=0;j<COLONNES_GRILLE;j++){
-            printf("%c",grille[i][j]);
+            printf(" %c ",grille[i][j]);
             }
             printf("\n");
         }
@@ -138,22 +144,94 @@ void avancer(serpent_t* s){
 void changer_direction(serpent_t* s,direction_t d){
     s->direction_serpent = d;
 }
+void creer_pommes (position_t* pommes){
+    
+    for(int i=0;i<NOMBRE_POMMES;i++){
+        pommes[i].l = rand() % LIGNES_GRILLE;
+        pommes[i].c = rand() % COLONNES_GRILLE; 
+    }
+}
+
+int manger(serpent_t s,position_t* pommes){
+    int i=0;
+    while(i<NOMBRE_POMMES && ((s.position_serpent[s.longueur-1].c != pommes[i].c) || (s.position_serpent[s.longueur-1].l != pommes[i].l) )){
+        printf("%d : \n",i);
+        printf("la position de la tete du serpent : (%d,%d) \n",s.position_serpent[s.longueur-1].l,s.position_serpent[s.longueur-1].c);
+        printf("la pomme : %d %d\n",pommes[i].l,pommes[i].c);
+        i++;
+    }
+    if(i<NOMBRE_POMMES){
+        pommes[i].l = rand() % LIGNES_GRILLE;
+        pommes[i].c = rand() % COLONNES_GRILLE;
+        return 1;
+    }
+    else
+    printf("on est rentre dans le else\n");
+        return 0;
+}
+void redimensionner_serpent(serpent_t*s){
+    int l=0;
+    int c=0;
+    switch(s->direction_serpent){
+        case SUD:
+                l = 1;
+                break;
+        case NORD:
+                l = -1;
+                break;
+        case EST:
+                c = 1;
+                break;
+        case WEST:
+                c = -1;
+                break;
+    }
+    position_t p = {s->position_serpent[s->longueur - 1].l + l,s->position_serpent[s->longueur - 1].c + c};
+    ajouter(s->position_serpent,p);
+    s->longueur++;
+    
+}
 
 int main() {
+    srand(time(NULL));
     char G[LIGNES_GRILLE][COLONNES_GRILLE];
     position_t tete = {5, 5}; 
     serpent_t mon_serpent = creer_serpent(tete, SUD, 4);
-
-    afficher_grille(G,mon_serpent);
-    avancer(&mon_serpent);
-    printf("avancer : NORD \n\n\n");
-    afficher_grille(G,mon_serpent);
-    
-    changer_direction(&mon_serpent,EST);
-    printf("position change a %d\n",mon_serpent.direction_serpent);
-    avancer(&mon_serpent);
-    printf("avancer : EST \n\n\n");
-    afficher_grille(G,mon_serpent);
+    position_t pommes[NOMBRE_POMMES];
+    creer_pommes(pommes);
+    int choix;
+    while(1){
+        afficher_grille(G,mon_serpent,pommes);
+        printf("entrez la direction ou vous voulez patir : (0 pour SUD, 1 pour NORD , 2 pour EST , 3 pour WEST ) ");
+        scanf("%d",&choix);
+        while(getchar()!= '\n');
+        switch(choix){
+            case 0:
+                changer_direction(&mon_serpent,SUD);
+                break;
+            case 1:
+                changer_direction(&mon_serpent,NORD);
+                break;
+            case 2:
+                changer_direction(&mon_serpent,EST);
+                break;
+            case 3:
+                changer_direction(&mon_serpent,WEST);
+                break;
+            default:
+                printf("entrez un choix valide\n");
+                break;
+        }
+         avancer(&mon_serpent);
+        if(manger(mon_serpent,pommes)){
+             printf("DEBUG : la condition marche bien \n");
+            redimensionner_serpent(&mon_serpent);
+        }
+        else{
+            printf("DEBUG : on est rentrer dans le else\n");
+        }
+           
+    }
 
     
 
