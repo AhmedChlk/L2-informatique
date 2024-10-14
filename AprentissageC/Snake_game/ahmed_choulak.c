@@ -2,10 +2,13 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define TAILLE_GRILLE 400
+#define TAILLE_GRILLE 1800
 #define NOMBRE_POMMES 6
-const int LIGNES_GRILLE = 20;
-const int COLONNES_GRILLE = 20;
+#define LONGUEUR_OBSTACLES 4
+
+const int NOMBRE_OBSTACLES = 6;
+const int LIGNES_GRILLE = 60;
+const int COLONNES_GRILLE = 30;
 
 typedef enum{
     NORD,
@@ -24,6 +27,12 @@ typedef struct{
     direction_t direction_serpent;
     int longueur;
 }serpent_t;
+
+typedef struct{
+    position_t pos[LONGUEUR_OBSTACLES];
+    direction_t direction;
+    int longueur;
+}obstacle_t;
 
 void initialiser (position_t* T){
     for(int i=0;i<TAILLE_GRILLE;i++){
@@ -93,7 +102,7 @@ serpent_t creer_serpent(position_t tete_serpent, direction_t d, int longueur) {
     return serpent;
 }
 
-void afficher_grille (char grille[LIGNES_GRILLE][COLONNES_GRILLE],serpent_t s,position_t* pommes) {
+void afficher_grille (char grille[LIGNES_GRILLE][COLONNES_GRILLE],serpent_t s,position_t* pommes ,obstacle_t* obstacles ) {
     for(int i = 0;i<LIGNES_GRILLE;i++){
         for(int j=0;j<COLONNES_GRILLE;j++){
             grille[i][j] = '.';
@@ -109,6 +118,12 @@ void afficher_grille (char grille[LIGNES_GRILLE][COLONNES_GRILLE],serpent_t s,po
     }
     for(int i = 0; i<NOMBRE_POMMES;i++){
             grille[pommes[i].l][pommes[i].c] = 'o';   
+    }
+
+    for(int i=0;i<NOMBRE_OBSTACLES;i++){
+        for(int j = 0;j<LONGUEUR_OBSTACLES;j++){
+            grille[obstacles[i].pos[j].l][obstacles[i].pos[j].c] = 'X';
+        }
     }
         for(int i = 0;i<LIGNES_GRILLE;i++){
             for(int j=0;j<COLONNES_GRILLE;j++){
@@ -155,9 +170,6 @@ void creer_pommes (position_t* pommes){
 int manger(serpent_t s,position_t* pommes){
     int i=0;
     while(i<NOMBRE_POMMES && ((s.position_serpent[s.longueur-1].c != pommes[i].c) || (s.position_serpent[s.longueur-1].l != pommes[i].l) )){
-        printf("%d : \n",i);
-        printf("la position de la tete du serpent : (%d,%d) \n",s.position_serpent[s.longueur-1].l,s.position_serpent[s.longueur-1].c);
-        printf("la pomme : %d %d\n",pommes[i].l,pommes[i].c);
         i++;
     }
     if(i<NOMBRE_POMMES){
@@ -166,7 +178,6 @@ int manger(serpent_t s,position_t* pommes){
         return 1;
     }
     else
-    printf("on est rentre dans le else\n");
         return 0;
 }
 void redimensionner_serpent(serpent_t*s){
@@ -192,16 +203,95 @@ void redimensionner_serpent(serpent_t*s){
     
 }
 
+void initialiser_obstacle (position_t* T){
+    for(int i=0;i<LONGUEUR_OBSTACLES;i++){
+        T[i].l = -1;
+        T[i].c = -1;
+    }
+}
+
+obstacle_t cree_obstacle(position_t p,direction_t d,int longueur){
+    obstacle_t ob;
+    ob.longueur = longueur;
+    ob.direction = d;
+    initialiser_obstacle(ob.pos);
+    ajouter(ob.pos,p);
+    for(int i=0;i<longueur-1;i++){
+        switch(d){
+            case SUD:
+                p.l += 1;
+                break;
+        case NORD:
+                p.l -= 1;
+                break;
+        case EST:
+                p.c += 1;
+                break;
+        case WEST:
+                p.c -= 1;
+                break;
+        }
+        ajouter(ob.pos,p);
+    }
+    return ob;
+}
+
+
+void cree_obstacles (obstacle_t* obstacles){
+    for(int i=0;i<NOMBRE_OBSTACLES;i++){
+        direction_t d;
+        position_t p;
+        p.l = rand() % LIGNES_GRILLE;
+        p.c = rand() % COLONNES_GRILLE;
+        switch(rand() % 4){
+            case 0:
+                d = NORD;
+                break;
+            case 1:
+                d = SUD;
+                break;
+            case 2:
+                d = EST;
+                break;
+            case 3: 
+                d = WEST;
+                break;
+        }
+        obstacles[i] = cree_obstacle(p,d,LONGUEUR_OBSTACLES);
+        
+    }
+}
+int percuter(obstacle_t* obstacles,serpent_t s){
+    int i=0;
+    while(i<NOMBRE_OBSTACLES ){
+        for(int j=0 ; j<LONGUEUR_OBSTACLES;j++){
+            if((obstacles[i].pos[j].l == s.position_serpent[s.longueur -1].l )&& (obstacles[i].pos[j].c == s.position_serpent[s.longueur -1].c ) )
+                return 1;
+        }
+        i++;
+    }
+    if(s.position_serpent[s.longueur -1].l>=LIGNES_GRILLE || s.position_serpent[s.longueur -1].l < 0 || s.position_serpent[s.longueur -1].c >= COLONNES_GRILLE || s.position_serpent[s.longueur -1].c < 0)
+        return 1;
+    for(int k=0;k<s.longueur-1;k++){
+        if(s.position_serpent[k].l == s.position_serpent[s.longueur-1].l && s.position_serpent[k].c == s.position_serpent[s.longueur-1].c)
+            return 1;
+    }
+    return 0;
+
+
+}
 int main() {
     srand(time(NULL));
+    obstacle_t obstacles[NOMBRE_OBSTACLES];
+    cree_obstacles(obstacles);
     char G[LIGNES_GRILLE][COLONNES_GRILLE];
     position_t tete = {5, 5}; 
     serpent_t mon_serpent = creer_serpent(tete, SUD, 4);
     position_t pommes[NOMBRE_POMMES];
     creer_pommes(pommes);
     int choix;
-    while(1){
-        afficher_grille(G,mon_serpent,pommes);
+    while(!percuter(obstacles,mon_serpent)){
+        afficher_grille(G,mon_serpent,pommes,obstacles);
         printf("entrez la direction ou vous voulez patir : (0 pour SUD, 1 pour NORD , 2 pour EST , 3 pour WEST ) ");
         scanf("%d",&choix);
         while(getchar()!= '\n');
@@ -224,16 +314,11 @@ int main() {
         }
          avancer(&mon_serpent);
         if(manger(mon_serpent,pommes)){
-             printf("DEBUG : la condition marche bien \n");
             redimensionner_serpent(&mon_serpent);
         }
-        else{
-            printf("DEBUG : on est rentrer dans le else\n");
-        }
-           
-    }
 
-    
+    }
+    printf("partie terminé \n");
 
     return 0;
 }
