@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-//pour s'assurer d'avoir dans tout les cas M_PI definis 
+//pour s'assurer d'avoir dans tout les cas M_PI 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
