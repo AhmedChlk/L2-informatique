@@ -1,26 +1,31 @@
 #include <stdio.h>
 
-#define TAILLE_MATRICE 2
+#define SIZE 2
 
-void MultMat(int mat1[TAILLE_MATRICE][TAILLE_MATRICE], int mat2[TAILLE_MATRICE][TAILLE_MATRICE], int F[TAILLE_MATRICE][TAILLE_MATRICE]) {
-    for (int i = 0; i < TAILLE_MATRICE; i++) {
-        for (int j = 0; j < TAILLE_MATRICE; j++) {
+void MultMat(int mat1[SIZE][SIZE], int mat2[SIZE][SIZE], int F[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
             F[i][j] = 0;
-            for (int k = 0; k < TAILLE_MATRICE; k++) {
+            for (int k = 0; k < SIZE; k++) {
                 F[i][j] += mat1[i][k] * mat2[k][j];
             }
         }
     }
 }
 
-void MatrixPower(int F[TAILLE_MATRICE][TAILLE_MATRICE], int n) {
-    int R[TAILLE_MATRICE][TAILLE_MATRICE] = {{0, 0}, {0, 0}};
-    int M[TAILLE_MATRICE][TAILLE_MATRICE] = {{1, 1}, {1, 0}};
-
+void MatrixPower(int F[SIZE][SIZE], int n) {
+    int R[SIZE][SIZE] = {{0, 0}, {0, 0}};
+    //int M[SIZE][SIZE] = {{1, 1}, {1, 0}};
+    //copie F dans M
+       for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            M[i][j] = F[i][j];
+        }
+    }
     for (int i = 1; i < n-1; i++) {
         MultMat(F, M, R);
-        for(int j = 0;j<TAILLE_MATRICE;j++){
-            for(int k=0;k<TAILLE_MATRICE;k++){
+        for(int j = 0;j<SIZE;j++){
+            for(int k=0;k<SIZE;k++){
                 F[j][k] = R[j][k];
             }
         }
@@ -29,7 +34,7 @@ void MatrixPower(int F[TAILLE_MATRICE][TAILLE_MATRICE], int n) {
 
 int main() {
     int n;
-    int F[TAILLE_MATRICE][TAILLE_MATRICE] = {{1, 1}, {1, 0}};
+    int F[SIZE][SIZE] = {{1, 1}, {1, 0}};
 
     printf("Entrez le nombre que vous souhaitez pour le fibo : ");
     while (scanf("%d", &n) != 1 || n < 0) {
@@ -39,12 +44,12 @@ int main() {
     }
 
     if (n == 0) {
-        printf("Le résultat est : 0\n");
+        printf("Le resultat est : 0\n");
     } else if (n == 1) {
-        printf("Le résultat est : 1\n");
+        printf("Le resultat est : 1\n");
     } else {
         MatrixPower(F, n);
-        printf("Le résultat est : %d\n", F[0][0]);
+        printf("Le resultat est : %d\n", F[0][0]);
     }
     
     return 0;
