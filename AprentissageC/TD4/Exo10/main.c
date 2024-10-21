@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <myutils.h>
 #include <time.h>
 
 void afficher_tab(float tab[],int n){

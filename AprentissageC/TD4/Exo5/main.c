@@ -44,9 +44,21 @@ void dessiner_damier(int t, int c) {
         }
         printf("\n");
     }
+    printf("\n\n\n");
+    for (int i = 0; i < t * c; i++) {  // Parcours des lignes du damier
+        for (int j = 0; j < t * c; j++) {  // Parcours des colonnes du damier
+            if (((i/c) + (j/c)) % 2 == 0) 
+                printf("X");
+            else 
+                printf(".");
+        }
+        printf("\n");
+    }
+
 }
 
+
 int main() {
-    dessiner_damier(4, 2);  // Test avec t=4 (nombre de cases), c=2 (taille des cases)
+    dessiner_damier(2, 3);  // Test avec t=4 (nombre de cases), c=2 (taille des cases)
     return 0;
 }

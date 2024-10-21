@@ -11,11 +11,10 @@ int entier_car(char c) {
 
 int main() {
     // Afficher les 128 caractères de la table ASCII
-    for(int i = 0; i < 128; i++) {
-        printf("La valeur %d représente '%c'\n", i, passage_ASCII(i));
+    for(unsigned short i = 0; i <131072 ; i++) {
+        printf("La valeur %d représente et le unsigned short de i est : %hu '%c'\n", i,(unsigned short)i, passage_ASCII(i));
     }
-    char example_char = 'A';
-    printf("Le caractère '%c' correspond à l'entier %d\n", example_char, entier_car(example_char));
+
 
     return 0;
 }
