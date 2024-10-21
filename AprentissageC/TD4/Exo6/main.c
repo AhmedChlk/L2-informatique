@@ -1,19 +1,14 @@
 #include <stdio.h>
 
-void calculer_moutons_dindons(int t, int p) {
-    int m, d;
+void calculer_moutons_et_dindons(int t, int p) {
+    int m = (p - 2 * t) / 2;
     
-    for (m = 0; m < t; m++) {
-        d = t - m;
-        
-        if (4 * m + 2 * d == p) {
-            printf("Nombre de moutons: %d\n", m);
-            printf("Nombre de dindons: %d\n", d);
-            return;
-        }
+    if ((p - 2 * t) % 2 == 0 && m >= 0 && m <= t) {
+        int d = t - m;
+        printf("Il y a %d moutons et %d dindons.\n", m, d);
+    } else {
+        printf("Aucune combinaison valide de moutons et de dindons pour t = %d et p = %d.\n", t, p);
     }
-    
-    printf("Il n'est pas possible d'avoir %d têtes et %d pattes.\n", t, p);
 }
 
 int main() {
