@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <utils.h>
 
 typedef struct{
     int jour;
@@ -6,16 +7,6 @@ typedef struct{
     int annee;
 }une_date_t;
 
-
-
-void lire_entier(int* var, char* chaine, char* chaine_erreur) {
-    printf("%s", chaine);
-    while (scanf("%d", var) != 1) {
-        printf("%s\n", chaine_erreur);
-        while (getchar() != '\n');
-        printf("%s", chaine);
-    }
-}
 void lire_date(une_date_t* date){
     date->jour = -1;
     date->mois = -1;

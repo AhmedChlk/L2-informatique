@@ -1,0 +1,3 @@
+cimpilation avec inclusion de ma propre bibliotheque
+gcc -I ~/Bureau/Mon_dossier_reseau_UPVD/L2-informatique/AprentissageC/usr/include/ -Wall -std=c99 main.c -c
+gcc -Wall -o main.exe main.o -lmyutils -L./../../usr/lib

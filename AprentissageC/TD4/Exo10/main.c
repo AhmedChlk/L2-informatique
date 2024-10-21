@@ -14,7 +14,6 @@ void init_tab(float tab[],int n){
         tab[i] = (float) (rand() % 100) / (rand() % 100);
     }
 }
-
 void tri_bulle(float* tab,int n){
     float temp;
     for(int i=0;i<n;i++){
@@ -26,24 +25,6 @@ void tri_bulle(float* tab,int n){
 
             }
         }
-    }
-}
-
-void lire_entier(int* var, char* chaine, char* chaine_erreur) {
-    printf("%s", chaine);
-    while (scanf("%d", var) != 1) {
-        printf("%s\n", chaine_erreur);
-        while (getchar() != '\n');
-        printf("%s", chaine);
-    }
-}
-void lire_element_tab(int* element ,char* chaine , int indice , char* chaine_erreur){
-        printf("%s %d : ", chaine,indice);
-    while (scanf("%d", element) != 1) {
-        printf("%s\n", chaine_erreur);
-        while (getchar() != '\n');
-        printf("%s %d : ", chaine,indice);
-
     }
 }
 int main(){

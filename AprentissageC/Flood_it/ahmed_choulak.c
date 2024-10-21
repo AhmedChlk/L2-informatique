@@ -90,10 +90,13 @@ void initialiser (position_t* T){
 }
 void ajouter (position_t* T , position_t p){
     int i=0;
-    while (i < TAB_TAILLE && T[i].l != -1 && T[i].c != -1) {
+    /*while (i < TAB_TAILLE && T[i].l != -1 && T[i].c != -1) {
         if (T[i].l == p.l && T[i].c == p.c) {
             return;
         }
+        i++;
+    }*/
+    while (i < TAB_TAILLE && T[i].l != -1 && T[i].c != -1 && !(T[i].l == p.l && T[i].c == p.c)) {
         i++;
     }
     if (i<TAB_TAILLE){
@@ -103,13 +106,18 @@ void ajouter (position_t* T , position_t p){
     }
     }
 position_t retirer (position_t* T){
-    int i;
+    int i=0;
     position_t p = T[0];
-    for( i=0;i<TAB_TAILLE-1;i++){
+    
+    /*for( i=0;i<TAB_TAILLE-1;i++){
         T[i] = T[i+1];
     }
-    T[TAB_TAILLE - 1].c = -1;
-    T[TAB_TAILLE - 1].l = -1;
+    //T[TAB_TAILLE - 1].c = -1;
+    //T[TAB_TAILLE - 1].l = -1;
+    */
+    while (T[i].l != -1 && T[i].c != -1) {
+        T[i] = T[i+1];
+    }
     return p; 
 }
 void afficher (position_t* T){
@@ -123,6 +131,7 @@ int taille_region_adjacente(grille_t G, position_t* T) {
     position_t p = {0, 0};
     int taille_region = 0;
     int couleur_initiale = G.grille[0][0].couleur;
+    position_t delta[4]= {{0,1},{0,-1},{1,0},{-1,0}}
 
     ajouter(T, p);
 
@@ -132,8 +141,14 @@ int taille_region_adjacente(grille_t G, position_t* T) {
     while (T[0].l != -1 && T[0].c != -1) {
         p = retirer(T);  
         taille_region++;
-
-        
+        for(int i=0;i<4;i++){
+            if(p.c + delta[i].c < N && p.c delta[i].c >= 0 && p.l + delta[i].l < N && p.l +delta[i].l >= 0 && G.grille[p.l + delta[i].l][p.c + delta[i].c].couleur == couleur_initiale && G.grille[p.l][p.c + delta[i].cc].traitee == 0)
+            {
+                ajouter(T, (position_t){p.l + delta[i].l , p.c + delta[i].c});
+                G.grille[p.l][p.c + 1].traitee = 1;  
+            }
+        }
+        /*
         if (p.c + 1 < N && G.grille[p.l][p.c + 1].couleur == couleur_initiale && G.grille[p.l][p.c + 1].traitee == 0) {
             ajouter(T, (position_t){p.l, p.c + 1});
             G.grille[p.l][p.c + 1].traitee = 1;  
@@ -153,6 +168,7 @@ int taille_region_adjacente(grille_t G, position_t* T) {
             ajouter(T, (position_t){p.l - 1, p.c});
             G.grille[p.l - 1][p.c].traitee = 1;  
         }
+        */
     }
     return taille_region;
 }
