@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 3
-#define TAB_TAILLE 9
+#define N 4
+#define TAB_TAILLE 16
 
 
 #define RESET_ALL    "\x1b[0m"
@@ -96,28 +96,30 @@ void ajouter (position_t* T , position_t p){
         }
         i++;
     }*/
-    while (i < TAB_TAILLE && T[i].l != -1 && T[i].c != -1 && !(T[i].l == p.l && T[i].c == p.c)) {
+    while (i < TAB_TAILLE && T[i].l != -1 && T[i].c != -1 ){
+        if(T[i].l == p.l && T[i].c == p.c) return;
         i++;
     }
-    if (i<TAB_TAILLE){
+    if (i<TAB_TAILLE)
             T[i] = p;
-    }else{
+    else
             printf("erreur tableau plein");
-    }
-    }
+    
+}
 position_t retirer (position_t* T){
     int i=0;
     position_t p = T[0];
     
-    /*for( i=0;i<TAB_TAILLE-1;i++){
+    for( i=0;i<TAB_TAILLE-1;i++){
         T[i] = T[i+1];
     }
-    //T[TAB_TAILLE - 1].c = -1;
-    //T[TAB_TAILLE - 1].l = -1;
-    */
+    T[TAB_TAILLE - 1].c = -1;
+    T[TAB_TAILLE - 1].l = -1;
+    
+    /* ne marche pas
     while (T[i].l != -1 && T[i].c != -1) {
         T[i] = T[i+1];
-    }
+    }*/
     return p; 
 }
 void afficher (position_t* T){
@@ -131,7 +133,7 @@ int taille_region_adjacente(grille_t G, position_t* T) {
     position_t p = {0, 0};
     int taille_region = 0;
     int couleur_initiale = G.grille[0][0].couleur;
-    position_t delta[4]= {{0,1},{0,-1},{1,0},{-1,0}}
+    position_t delta[4]= {{0,1},{0,-1},{1,0},{-1,0}};
 
     ajouter(T, p);
 
@@ -142,10 +144,10 @@ int taille_region_adjacente(grille_t G, position_t* T) {
         p = retirer(T);  
         taille_region++;
         for(int i=0;i<4;i++){
-            if(p.c + delta[i].c < N && p.c delta[i].c >= 0 && p.l + delta[i].l < N && p.l +delta[i].l >= 0 && G.grille[p.l + delta[i].l][p.c + delta[i].c].couleur == couleur_initiale && G.grille[p.l][p.c + delta[i].cc].traitee == 0)
+            if((p.c + delta[i].c) < N && (p.c + delta[i].c) >= 0 && (p.l + delta[i].l) < N && (p.l +delta[i].l) >= 0 && G.grille[p.l + delta[i].l][p.c + delta[i].c].couleur == couleur_initiale && G.grille[p.l + delta[i].l][p.c + delta[i].c].traitee == 0)
             {
                 ajouter(T, (position_t){p.l + delta[i].l , p.c + delta[i].c});
-                G.grille[p.l][p.c + 1].traitee = 1;  
+                G.grille[p.l + delta[i].l][p.c + delta[i].c].traitee = 1;  
             }
         }
         /*
@@ -174,19 +176,28 @@ int taille_region_adjacente(grille_t G, position_t* T) {
 }
 
 void modifier_couleur(position_t* T, grille_t* G , int couleur) {
-    position_t p = {0,0}; 
+    position_t p = {0,0};
+    position_t delta[4]= {{0,1},{0,-1},{1,0},{-1,0}};
     int couleur_initialle = G->grille[0][0].couleur;
     ajouter(T, p);
     
     while (T[0].l != -1 && T[0].c != -1) {
+        //printf("DEBUG T[0] : %d %d\n",T[0].l,T[0].c);
+        fflush(stdout);
         p = retirer(T);
         
         G->grille[p.l][p.c].couleur = couleur;
         G->grille[p.l][p.c].traitee = 1;
-
+        for(int i=0;i<4;i++){
+            if((p.c + delta[i].c) < N && (p.c + delta[i].c) >= 0 && (p.l + delta[i].l) < N && (p.l +delta[i].l) >= 0 && G->grille[p.l + delta[i].l][p.c + delta[i].c].couleur == couleur_initialle && G->grille[p.l + delta[i].l][p.c + delta[i].c].traitee == 0)
+            {
+                ajouter(T, (position_t){p.l + delta[i].l , p.c + delta[i].c});
+            }
+        }
+        /*
         if (p.c + 1 < N && G->grille[p.l][p.c + 1].couleur == couleur_initialle && G->grille[p.l][p.c + 1].traitee == 0) {
             ajouter(T, (position_t){p.l, p.c + 1});
-        }
+        }clear
         
         if (p.c - 1 >= 0 && G->grille[p.l][p.c - 1].couleur == couleur_initialle && G->grille[p.l][p.c - 1].traitee == 0)  {
             ajouter(T, (position_t){p.l, p.c - 1});
@@ -199,6 +210,7 @@ void modifier_couleur(position_t* T, grille_t* G , int couleur) {
         if (p.l - 1 >= 0 && G->grille[p.l - 1][p.c].couleur == couleur_initialle && G->grille[p.l - 1][p.c].traitee == 0) {
             ajouter(T, (position_t){p.l - 1, p.c});
         }
+        */
     }
 }
 void reset_traitement (grille_t*G){
@@ -216,12 +228,16 @@ void jouer_floodit(grille_t* G,position_t* T,int nombre_coup){
         printf("voici la grille et il vous reste %d : \n",nombre_coup-nombre_coup_jouee);
         afficher_grille(*G);
         printf("entrez la couleur que vous voulez(entre 0 et 5) : \n 0 pour %s ROUGE %s\n 1 pour %s BLANC %s \n 2 pour %s JAUNE %s\n 3 pour %s CYAN %s\n 4 pour %s VERT %s\n 5 pour %s NOIR %s\n",ROUGE,RESET_ALL,BLANC,RESET_ALL,JAUNE,RESET_ALL,CYAN,RESET_ALL,VERT,RESET_ALL,NOIR,RESET_ALL);
-        while(scanf("%d",&couleur_choisie)!= 1 && couleur_choisie >= 0 && couleur_choisie <= 0){
-            printf("erreur entrez une coouleur valide \n");
+        while(scanf("%d",&couleur_choisie)!= 1 || couleur_choisie > 5 || couleur_choisie <= 0){
+            printf("ERREUR ENTREZ UNE COULEUR VALIDE \n");
+            printf("voici la grille et il vous reste %d : \n",nombre_coup-nombre_coup_jouee);
+            afficher_grille(*G);
             printf("entrez la couleur que vous voulez(entre 0 et 5) : \n 0 pour %s ROUGE %s\n 1 pour %s BLANC %s \n 2 pour %s JAUNE %s\n 3 pour %s CYAN %s\n 4 pour %s VERT %s\n 5 pour %s NOIR %s\n",ROUGE,RESET_ALL,BLANC,RESET_ALL,JAUNE,RESET_ALL,CYAN,RESET_ALL,VERT,RESET_ALL,NOIR,RESET_ALL);
-
+            while(getchar() != '\n');
 
         }
+        
+        while(getchar() != '\n');
         modifier_couleur(T,G,couleur_choisie);
         reset_traitement(G);
         nombre_coup_jouee++;
@@ -279,17 +295,25 @@ int algo_glouton_approche1(grille_t G,position_t* T,int nombre_coup,int* solutio
 
 }
 void recup_tab_region_adjacente(grille_t G,position_t* T, position_t* region) {
-    position_t p = {0, 0}; // Départ en (0,0)
-    int couleur_initiale = G.grille[0][0].couleur; // Couleur de départ
-    ajouter(T, p);  // Ajoute la première position à la pile/queue
-    G.grille[p.l][p.c].traitee = 1; // Marque la première cellule comme traitée
+    position_t p = {0, 0};
+    position_t delta[4]= {{0,1},{0,-1},{1,0},{-1,0}};
+    int couleur_initiale = G.grille[0][0].couleur; 
+    ajouter(T, p); 
+    G.grille[p.l][p.c].traitee = 1; 
 
     
     while (T[0].l != -1 && T[0].c != -1) {
-        p = retirer(T);  // Retire une position de la pile/queue
-        ajouter(region, p);  // Ajoute cette position à la région adjacente
+        p = retirer(T);  
+        ajouter(region, p);
+        G.grille[p.l][p.c].traitee = 1;  
 
-        // Vérification des voisins (droite, gauche, bas, haut)
+        for(int i=0;i<4;i++){
+            if((p.c + delta[i].c) < N && (p.c + delta[i].c) >= 0 && (p.l + delta[i].l) < N && (p.l +delta[i].l) >= 0 && G.grille[p.l + delta[i].l][p.c + delta[i].c].couleur == couleur_initiale && G.grille[p.l + delta[i].l][p.c + delta[i].c].traitee == 0)
+            {
+                ajouter(T, (position_t){p.l + delta[i].l , p.c + delta[i].c});
+            }
+        }
+        /*
         if (p.c + 1 < N && G.grille[p.l][p.c + 1].couleur == couleur_initiale && G.grille[p.l][p.c + 1].traitee == 0) {
             ajouter(T, (position_t){p.l, p.c + 1});
             G.grille[p.l][p.c + 1].traitee = 1;  
@@ -309,17 +333,26 @@ void recup_tab_region_adjacente(grille_t G,position_t* T, position_t* region) {
             ajouter(T, (position_t){p.l - 1, p.c});
             G.grille[p.l - 1][p.c].traitee = 1;  
         }
+        */
     }
 }
 int calculer_frontiere_couleur(grille_t G,position_t* T,int couleur){
     position_t region_adjacente[TAB_TAILLE];
     position_t p;
+    position_t delta[4]= {{0,1},{0,-1},{1,0},{-1,0}};
     initialiser(region_adjacente);
     recup_tab_region_adjacente(G,T,region_adjacente);
     int compteur_couleur = 0;
     for (int i=0;i<taille_region_adjacente(G,T);i++){
         p = retirer(region_adjacente);
-
+        for(int i=0;i<4;i++){
+            if((p.c + delta[i].c) < N && (p.c + delta[i].c) >= 0 && (p.l + delta[i].l) < N && (p.l +delta[i].l) >= 0 && G.grille[p.l + delta[i].l][p.c + delta[i].c].couleur == couleur && G.grille[p.l + delta[i].l][p.c + delta[i].c].traitee == 0)
+            {
+                compteur_couleur++;
+                G.grille[p.l][p.c + 1].traitee = 1;  
+            }
+        }
+        /*
         if (p.c + 1 < N && G.grille[p.l][p.c + 1].couleur == couleur && G.grille[p.l][p.c + 1].traitee == 0) {
             compteur_couleur++;
             G.grille[p.l][p.c + 1].traitee = 1;  
@@ -339,6 +372,7 @@ int calculer_frontiere_couleur(grille_t G,position_t* T,int couleur){
             compteur_couleur++;
             G.grille[p.l - 1][p.c].traitee = 1;  
         }
+        */
     }
     return compteur_couleur;
     
@@ -378,6 +412,7 @@ int main(){
     int nombre_coup_necessaire=0;
     remplir_grille(&Floodit);
     initialiser(T);
+    
     int solutions_grille[10];
     int solutions_grille2[10];
     printf("solution algo 1 : \n");
@@ -395,6 +430,7 @@ int main(){
         }
     }else
         printf("solution impossible \n");
-
+    
+    jouer_floodit(&Floodit,T,10);
     return 0;
 }
