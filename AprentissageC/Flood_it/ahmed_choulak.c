@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 4
-#define TAB_TAILLE 16
+#define N 3
+#define TAB_TAILLE N*N+1
 
 
 #define RESET_ALL    "\x1b[0m"
@@ -110,16 +110,17 @@ position_t retirer (position_t* T){
     int i=0;
     position_t p = T[0];
     
+    /*
     for( i=0;i<TAB_TAILLE-1;i++){
         T[i] = T[i+1];
     }
     T[TAB_TAILLE - 1].c = -1;
     T[TAB_TAILLE - 1].l = -1;
-    
-    /* ne marche pas
+    */
     while (T[i].l != -1 && T[i].c != -1) {
         T[i] = T[i+1];
-    }*/
+        i++;
+    }
     return p; 
 }
 void afficher (position_t* T){
@@ -183,7 +184,7 @@ void modifier_couleur(position_t* T, grille_t* G , int couleur) {
     
     while (T[0].l != -1 && T[0].c != -1) {
         //printf("DEBUG T[0] : %d %d\n",T[0].l,T[0].c);
-        fflush(stdout);
+        //fflush(stdout);
         p = retirer(T);
         
         G->grille[p.l][p.c].couleur = couleur;
@@ -223,12 +224,12 @@ void reset_traitement (grille_t*G){
 
 void jouer_floodit(grille_t* G,position_t* T,int nombre_coup){
     int nombre_coup_jouee = 0,couleur_choisie;
-    while(nombre_coup_jouee < nombre_coup && taille_region_adjacente(*G,T)!= TAB_TAILLE){
+    while(nombre_coup_jouee < nombre_coup && taille_region_adjacente(*G,T)!= N * N ){
         printf("taille region adjacente : %d\n",taille_region_adjacente(*G,T));
         printf("voici la grille et il vous reste %d : \n",nombre_coup-nombre_coup_jouee);
         afficher_grille(*G);
         printf("entrez la couleur que vous voulez(entre 0 et 5) : \n 0 pour %s ROUGE %s\n 1 pour %s BLANC %s \n 2 pour %s JAUNE %s\n 3 pour %s CYAN %s\n 4 pour %s VERT %s\n 5 pour %s NOIR %s\n",ROUGE,RESET_ALL,BLANC,RESET_ALL,JAUNE,RESET_ALL,CYAN,RESET_ALL,VERT,RESET_ALL,NOIR,RESET_ALL);
-        while(scanf("%d",&couleur_choisie)!= 1 || couleur_choisie > 5 || couleur_choisie <= 0){
+        while(scanf("%d",&couleur_choisie)!= 1 || couleur_choisie > 5 || couleur_choisie < 0){
             printf("ERREUR ENTREZ UNE COULEUR VALIDE \n");
             printf("voici la grille et il vous reste %d : \n",nombre_coup-nombre_coup_jouee);
             afficher_grille(*G);
@@ -243,7 +244,8 @@ void jouer_floodit(grille_t* G,position_t* T,int nombre_coup){
         nombre_coup_jouee++;
 
     }
-    if(taille_region_adjacente(*G,T)== TAB_TAILLE){
+    if(taille_region_adjacente(*G,T)== N * N ){
+        afficher_grille(*G);
         printf("congratulations vous avez gagné\n");
     }
     else{
@@ -272,7 +274,7 @@ int algo_glouton_approche1(grille_t G,position_t* T,int nombre_coup,int* solutio
     int solutions[nombre_coup];
     int resultatSimulation[COULEUR_MAX];
     int nombre_coup_jouee =0;
-    while(nombre_coup_jouee < nombre_coup && taille_region_adjacente(G,T)!= TAB_TAILLE){
+    while(nombre_coup_jouee < nombre_coup && taille_region_adjacente(G,T)!= N * N ){
         //printf("COUP %d : \n\n",nombre_coup_jouee+1);
         for(int i=0;i<COULEUR_MAX;i++){
             resultatSimulation[i]=calculer_simulation_region_adjacente(G,T,i);
@@ -284,7 +286,7 @@ int algo_glouton_approche1(grille_t G,position_t* T,int nombre_coup,int* solutio
         //printf("DEBUG : coup %d : couleur coisie : %d\n",nombre_coup_jouee+1,solutions[nombre_coup_jouee]);
         nombre_coup_jouee++;
     }
-    if(taille_region_adjacente(G,T)== TAB_TAILLE){
+    if(taille_region_adjacente(G,T)== N * N ){
         for(int i = 0;i<nombre_coup_jouee;i++)
             solutions_grille[i]=solutions[i];
         *nombre_coup_necessaire = nombre_coup_jouee;
@@ -384,7 +386,7 @@ int algo_glouton_approche2(grille_t G, position_t* T, int nombre_coup, int* solu
     int resultat_frontiere [COULEUR_MAX];
     
     // Tant qu'il reste des coups et que la région adjacente ne couvre pas toute la grille
-    while (nombre_coup_jouee < nombre_coup && taille_region_adjacente(G, T) != TAB_TAILLE) {
+    while (nombre_coup_jouee < nombre_coup && taille_region_adjacente(G, T) != N * N ) {
         for(int i=0;i<COULEUR_MAX;i++){
             resultat_frontiere[i]=calculer_frontiere_couleur(G,T,i);
         }
@@ -395,7 +397,7 @@ int algo_glouton_approche2(grille_t G, position_t* T, int nombre_coup, int* solu
     }
 
     
-    if (taille_region_adjacente(G, T) == TAB_TAILLE) {
+    if (taille_region_adjacente(G, T) == N * N ) {
         for (int i = 0; i < nombre_coup_jouee; i++)
             solutions_grille[i] = solutions[i];
         *nombre_coup_necessaire = nombre_coup_jouee;
