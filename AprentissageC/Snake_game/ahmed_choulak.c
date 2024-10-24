@@ -113,7 +113,7 @@ void afficher_grille (char grille[LIGNES_GRILLE][COLONNES_GRILLE],serpent_t s,po
             grille[s.position_serpent[i].l][s.position_serpent[i].c] = '+';   
         }
         else{
-            grille[s.position_serpent[i].l][s.position_serpent[i].c] = '|';
+            grille[s.position_serpent[i].l][s.position_serpent[i].c] = '*';
         }
     }
     for(int i = 0; i<NOMBRE_POMMES;i++){
