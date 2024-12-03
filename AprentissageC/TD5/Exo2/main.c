@@ -24,26 +24,22 @@ void afficher_decimal(nombre_t nb) {
         int carry = nb.n[i];
         int taille = strlen(decimal);
 
-        // Multiplier le résultat intermédiaire par la base des blocs (65536)
         for (int j = 0; j < taille; j++) {
             int digit = (decimal[j] - '0') * BASE_BLOCS + carry;
-            decimal[j] = (digit % BASE_DECIMALE) + '0'; // Stocker le reste
-            carry = digit / BASE_DECIMALE;             // Retenue pour le chiffre suivant
+            decimal[j] = (digit % BASE_DECIMALE) + '0'; 
+            carry = digit / BASE_DECIMALE;         
         }
 
-        // Si retenue restante, l'ajouter au résultat
         while (carry > 0) {
             decimal[taille++] = (carry % BASE_DECIMALE) + '0';
             carry /= BASE_DECIMALE;
         }
     }
 
-    // Ajout du signe si nécessaire
     if (nb.signe == NEGATIF) {
         printf("-");
     }
 
-    // Affichage du résultat en inversant l'ordre des chiffres
     for (int i = strlen(decimal) - 1; i >= 0; i--) {
         printf("%c", decimal[i]);
     }
@@ -116,7 +112,7 @@ void add_sub (nombre_t n1 , nombre_t n2 , nombre_t* res,int op){
                     short val2 = (i < n2.k) ? n2.n[i] : 0;
                     n3.n[i] = val1 - val2 - retenu ; 
                     if (n3.n[i] < 0 ){
-                        n3.n[i] = (n3.n[i] + 65536) %65536;
+                        n3.n[i] = (n3.n[i] + BASE_BLOCS) % BASE_BLOCS;
                         retenu = 1;
                     }
                     else{
@@ -138,6 +134,34 @@ void add_sub (nombre_t n1 , nombre_t n2 , nombre_t* res,int op){
         res->n[i] = n3.n[i];
     }
     liberer_nombre(&n3);
+}
+void affichage_binaire(short n)
+{
+    int i;
+    for (i = 15; i >= 0; i--)
+        printf("%d", (n >> i ) & 1);
+    printf(" ");
+} 
+void affichage_hexa(short n)
+{
+    printf("%4x",n);
+}
+void afficher_nbr (nombre_t nb){
+    printf("--------------------affichage nombre--------------------\n");
+    switch(nb.signe){
+        case POSITIF :
+            printf("+ ");
+            break;
+        case NEGATIF :
+            printf("- ");
+            break;
+    }
+    for(int i=nb.k-1;i>=0;i--){
+        affichage_binaire(nb.n[i]);
+        //affichage_hexa(nb.n[i]);
+    }
+    printf("\n--------------------fin affichage-----------------------\n");
+
 }
 
 void mult(nombre_t n1, nombre_t n2, nombre_t* res) {
@@ -189,42 +213,60 @@ void mult(nombre_t n1, nombre_t n2, nombre_t* res) {
 
     liberer_nombre(&n3);
 }
-
-
-void affichage_binaire(short n)
-{
-    int i;
-    for (i = 15; i >= 0; i--)
-        printf("%d", (n >> i ) & 1);
-    printf(" ");
-} 
-void affichage_hexa(short n)
-{
-    printf("%4x",n);
-}
-void afficher_nbr (nombre_t nb){
-    printf("--------------------affichage nombre--------------------\n");
-    switch(nb.signe){
-        case POSITIF :
-            printf("+ ");
-            break;
-        case NEGATIF :
-            printf("- ");
-            break;
+nombre_t decaler_1 (nombre_t nbr){
+    int new_size = 16*(nbr.k + 1);
+    nombre_t temp = cree_nombre(new_size); ;
+    for(int i=1;i<nbr.k;i++){
+        temp.n[i] = nbr.n[i-1];
     }
-    for(int i=nb.k-1;i>=0;i--){
-        affichage_binaire(nb.n[i]);
-        //affichage_hexa(nb.n[i]);
-    }
-    printf("\n--------------------fin affichage-----------------------\n");
-
+    temp.signe = nbr.signe;
+    return temp;
 }
+void mult_seq (nombre_t n1 , nombre_t n2,nombre_t* res){
+    int max_k = max(n1.k,n2.k);
+    int produit , retenu = 0 ,i;
+    nombre_t n3 = cree_nombre (16 * 2 * max_k);
+    nombre_t acc = cree_nombre (16 * 2 * max_k);
+    for(int j=0;j<n1.k;j++){
+        for(i=0;i<n2.k;i++){
+            produit = (n2.n[i] * n1.n[j]) + retenu;
+            n3.n[i] = produit % (BASE_BLOCS * (i+1)) ;
+            retenu = produit / (BASE_BLOCS * (i+1)) ;  
+        }
+        //printf("DEBUG la valeur de n3 pendant l'execution : \n");
+        if(retenu){
+            if (i >= n3.k) { 
+                n3.k++;
+                n3.n = (short*) realloc(n3.n, n3.k * sizeof(short));
+                n3.n[n3.k - 1] = 0; 
+            }
+            n3.n[n3.k - 1] = retenu;
+            retenu = 0;
+        }
+        //afficher_nbr(n1);
+        n2 = decaler_1(n2);
+        add_sub(acc,n3,&acc,1);
+
+    }
+
+    res->signe = (n1.signe == n2.signe) ? POSITIF : NEGATIF;
+    res->n = (short*) realloc(res->n, acc.k * sizeof(short));
+    res->k = acc.k;
+    for (int i = 0; i < res->k; i++) {
+        res->n[i] = acc.n[i];
+    }
+}
+
+
 
 int main(){
-    nombre_t n = cree_nombre(48);
-    n.n[0] = 1;
-    n.n[1] = 2;
-    n.n[2] = 3;
-    afficher_decimal(n);
+    nombre_t n = cree_nombre(32) , n2 = cree_nombre(32), n3 = cree_nombre(32);
+    n.n[0] = 65535;
+    n2.n[0] = 4;
+
+    mult_seq(n,n2,&n3);
+    afficher_nbr(n3);
+    afficher_nbr(n);
+    afficher_nbr(n2);
     return 0;
 }
