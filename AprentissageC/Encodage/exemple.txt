@@ -1,0 +1,4 @@
+1. En cryptographie, le chiffrement de Cesar est une methode de chiffrement tres 
+simple : le texte chiffre s'obtient en remplacant chaque lettre du texte initial
+par une lettre a distance k fixe, toujours du meme cote, dans l'ordre de
+l'alphabet, et de maniere circulaire.

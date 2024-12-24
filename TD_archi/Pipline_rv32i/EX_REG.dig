@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>2</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>D_FF</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>RES</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1320" y="-800"/>
+    </visualElement>
+    <visualElement>
+      <elementName>D_FF</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>PC+4</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1100" y="3640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>RES</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="640" y="-800"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>PC+4</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="3640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>EX PC+4</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1220" y="3640"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>EX RES</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1440" y="-800"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>W EX</string>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="3960"/>
+    </visualElement>
+    <visualElement>
+      <elementName>D_FF</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>SRC2</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1420" y="1900"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>SRC2</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="1900"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>EX SRC2</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1540" y="1900"/>
+    </visualElement>
+    <visualElement>
+      <elementName>D_FF</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>TAKEN</string>
+        </entry>
+      </elementAttributes>
+      <pos x="1100" y="2200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>TAKEN</string>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="2200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>EX TAKEN</string>
+        </entry>
+      </elementAttributes>
+      <pos x="1220" y="2200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>D_FF</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>RD</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>5</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1100" y="2560"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>RD</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>5</int>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="2560"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>EX RD</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>5</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1220" y="2560"/>
+    </visualElement>
+    <visualElement>
+      <elementName>D_FF</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>OP CODE</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>7</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1100" y="3300"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>OP CODE</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>7</int>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="3300"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>EX OP CODE</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>7</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1220" y="3300"/>
+    </visualElement>
+    <visualElement>
+      <elementName>D_FF</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>SRC3</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1100" y="2960"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>IM</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="2960"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>EX IM</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>32</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1220" y="2960"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="960" y="-780"/>
+      <p2 x="1020" y="1920"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="1920"/>
+      <p2 x="1420" y="1920"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="2560"/>
+      <p2 x="1100" y="2560"/>
+    </wire>
+    <wire>
+      <p1 x="1160" y="2560"/>
+      <p2 x="1220" y="2560"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="2980"/>
+      <p2 x="1100" y="2980"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="3300"/>
+      <p2 x="1100" y="3300"/>
+    </wire>
+    <wire>
+      <p1 x="1160" y="3300"/>
+      <p2 x="1220" y="3300"/>
+    </wire>
+    <wire>
+      <p1 x="960" y="-780"/>
+      <p2 x="1320" y="-780"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="3660"/>
+      <p2 x="1100" y="3660"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="2220"/>
+      <p2 x="1100" y="2220"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="1900"/>
+      <p2 x="1420" y="1900"/>
+    </wire>
+    <wire>
+      <p1 x="1480" y="1900"/>
+      <p2 x="1540" y="1900"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="2960"/>
+      <p2 x="1100" y="2960"/>
+    </wire>
+    <wire>
+      <p1 x="1160" y="2960"/>
+      <p2 x="1220" y="2960"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="2580"/>
+      <p2 x="1100" y="2580"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="3320"/>
+      <p2 x="1100" y="3320"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="3960"/>
+      <p2 x="1020" y="3960"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="3640"/>
+      <p2 x="1100" y="3640"/>
+    </wire>
+    <wire>
+      <p1 x="1160" y="3640"/>
+      <p2 x="1220" y="3640"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="2200"/>
+      <p2 x="1100" y="2200"/>
+    </wire>
+    <wire>
+      <p1 x="1160" y="2200"/>
+      <p2 x="1220" y="2200"/>
+    </wire>
+    <wire>
+      <p1 x="640" y="-800"/>
+      <p2 x="1320" y="-800"/>
+    </wire>
+    <wire>
+      <p1 x="1380" y="-800"/>
+      <p2 x="1440" y="-800"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="1920"/>
+      <p2 x="1020" y="2220"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="2560"/>
+      <p2 x="1020" y="2580"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="3660"/>
+      <p2 x="1020" y="3960"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="2580"/>
+      <p2 x="1020" y="2980"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="2980"/>
+      <p2 x="1020" y="3320"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="2220"/>
+      <p2 x="1020" y="2560"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="3320"/>
+      <p2 x="1020" y="3660"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

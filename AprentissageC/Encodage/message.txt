@@ -1,0 +1,78 @@
+Exercice 3. Jeu du UNO
+
+Argh, vous ne pensiez pas vous en sortir aussi facilement ? Maintenant, passons
+aux choses serieuses. Nous allons ecrire un programme qui permet de modeliser
+une partie simplifiee de UNO entre n joueurs (n >= 2).
+
+Le jeu de UNO est simple : chaque joueur a 7 cartes au debut de la partie. Le
+but est de s'en debarrasser le plus vite possible.
+
+Le jeu contient 108 cartes, reparties de la maniere suivante :
+- 19 cartes bleues numerotees de 0 a 9 (2 de chaque, sauf le 0),
+- 19 cartes rouges numerotees de 0 a 9,
+- 19 cartes jaunes numerotees de 0 a 9,
+- 19 cartes vertes numerotees de 0 a 9,
+et 32 cartes speciales:
+- 8 cartes '+2', 2 de chaque couleur,
+- 8 cartes 'Inversion', 2 de chaque couleur,
+- 8 cartes 'Passe son tour', 2 de chaque couleur,
+- 4 cartes 'Joker',
+- et 4 cartes '+4'.
+
+Nous allons simplifier les regles : a chaque tour de jeu, le joueur pose une
+carte sur celle en haut du talon de jeu, de la maniere suivante :
+- soit une carte de la meme couleur ou de meme numero que celle en haut du talon
+  de jeu, ou une carte 'Joker' (sans changer de couleur) : c'est au joueur
+  suivant de jouer, 
+- soit une carte speciale :
+  - 1 carte 'Inversion' de la meme couleur : on inverse le sens du jeu,
+  - 1 carte 'Passe son tour' de la meme couleur : le joueur suivant passe son
+    tour,
+  - 1 carte '+2' de la meme couleur : le joueur suivant prend 2 cartes et passe
+    son tour,
+  - et 1 carte '+4' : cette carte peut etre posee sur n'importe quelle autre
+    carte, le joueur choisit la nouvelle couleur, et le joueur suivant
+    prend 4 cartes et passe son tour.
+Un joueur qui peut jouer est oblige de poser une carte, sans en tirer une
+nouvelle de la pioche (ceci peut etre determiner automatiquement). Si un joueur
+ne peut pas poser de carte, il pioche une carte dans la pioche, qu'il peut
+eventuellement poser sur le talon de jeu en utilisant les regles precedentes. On
+commence la partie par le joueur 1, et dans le sens des aiguilles d'une montre,
+avec une carte non speciale en haut du talon de jeu, et une pioche contenant le
+reste de cartes (face cachee).
+  
+Par contre, pour complexifier, nous allons representer un tas de cartes sous
+forme d'une liste chainee. Nous aurons donc n+2 listes, une par joueur, une pour
+la pioche, et une pour le talon de jeu (qui sera en fait une pile). Et d'un
+point de vue implantation, vous aurez besoin de l'allocation dynamique.
+
+1. Ecrire une structure qui permet de representer une carte du jeu. Cette
+   structure pourra etre utilisee de la maniere suivante.
+
+card_t * carte = NULL;
+
+   Cette structure contiendra, notamment la couleur (sauf pour la 4 cartes
+   'Joker' et 'Inversion') et le type.
+
+2. Ecrire les fonctions suivantes :
+- une fonction qui insere une carte (en debut, par exemple) d'une liste,
+- une qui permet de rechercher une carte dans une liste,
+- et une qui permet de retirer une carte d'une liste. 
+
+3. Ecrire une fonction qui permet de creer toutes les cartes du jeu.
+
+4. Ecrire une fonction qui permet de melanger un paquet de cartes, et une qui
+   permet de tirer aleatoirement n paquets de 7 cartes. 
+
+5. Ecrire une fonction qui permet d'afficher le contenu du tas de jeu d'un
+   joueur donne.
+
+6. Ecrire une fonction qui permet de joueur, en verifiant si une carte peut etre
+   posee sur le talon de jeu.
+
+7. Ecrire finalement, la fonction principale du jeu, qui tire les n paquets de
+   cartes, puis deroule la partie jusqu'a ce qu'un joueur n'ait plus de cartes.
+   A chaque tour, une indication pourra etre donnee au joueur sur les cartes
+   qu'il peut effectivement jouer.
+
+Bonne chance !
