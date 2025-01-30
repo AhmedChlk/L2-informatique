@@ -38,7 +38,7 @@ pgm_t pgm_alloc(unsigned int height, unsigned int width, unsigned int max_value)
 }
 
 void pgm_free(pgm_t* image){
-    for(int i=0;i<image->height;i++){
+    for(int i=0;i<(int)image->height;i++){
         free(image->pixels[i]);
         //printf("liberation de la ligne %d\n",i+1);
     }
@@ -47,34 +47,52 @@ void pgm_free(pgm_t* image){
     printf("liberation avec succes\n");
 }
 pgm_t* pgm_read_asc(const char* fname){
-    pgm_t image;
     FILE* F = fopen(fname,"r");
     if(F == NULL){
         fprintf(stderr, "Erreur d'ouverture du ficher.\n");
         exit(EXIT_FAILURE);
     }
-    unsigned int height,width,max_value;
     char format[3];
-    fscanf(F,"%s %u %u %u",format,&width,&height,&max_value);
-    image = pgm_alloc(height,width,max_value);
-    pgm_t* image;
-    *image = image
+    fscanf(F,"%s",format);
+    printf("%s\n",format);
+
+    char c = fgetc(F);
+    c = fgetc(F);
+    while(c == '#'){
+        while(c != '\n' && c != EOF){
+            printf("%c",c);
+            c = fgetc(F);
+        }
+        c = fgetc(F);
+        printf("\n");
+    }
+    ungetc(c,F);
+    unsigned int height,width,max_value;
+    fscanf(F,"%u %u %u",&width,&height,&max_value);
+    printf(" width : %u height :  %u max value :%u\n",width,height,max_value);
+    pgm_t image = pgm_alloc(height,width,max_value);
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
-            fscanf(F,"%c",&(image->pixels[i][j]));
+            fscanf(F,"%u",&image.pixels[i][j]);
         }
     }
-    return image;
+    pgm_t* img = (pgm_t*) malloc (sizeof(pgm_t));
+    *img = image;
+    return img;
+
+}
+
+void pgm_write_asc(const char* fname,pgm_t* img){
+
 }
 int main(void) {
     pgm_t* image = pgm_read_asc("eye_s_asc.pgm");
+    for(int i=0;i<image->height;i++){
+        for(int j=0;j<image->width;j++){
+            printf("%u ",image->pixels[i][j]);
 
-    for (unsigned int i = 0; i < image->height; i++) {
-        for (unsigned int j = 0; j < image->width; j++) {
-            printf("%3d ", image->pixels[i][j]);
         }
         printf("\n");
     }
-    pgm_free(image);
     return 0;
 }
