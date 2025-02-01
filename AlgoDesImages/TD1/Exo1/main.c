@@ -243,6 +243,37 @@ void pgm_extract(const char* fname, pgm_t* image, unsigned int dx, unsigned int 
     pgm et qui retournera un pointeur sur un tableu de max_value contenant l’histogramme des pixels
     de l’image.
  ***********************/
+ unsigned int* pgm_get_histrogram(pgm_t* image){
+    unsigned int* histogram = (unsigned int*) malloc(image->max_value * sizeof(unsigned int));
+    for(int i=0;i<image->max_value;i++){
+        histogram[i] = 0;
+    }
+    for(int i=0;i<image->height;i++){
+        for(int j=0;j<image->width;j++){
+            histogram[image->pixels[i][j]-1]++;
+        }
+    }
+    return histogram;
+ }
+
+ /***********************
+    Écrire la fonction pgm_write_histogram qui prendra en paramètre un pointeur sur une structure
+    pgm, un pointeur sur une chaine de caractère fname. La fonction devra créer le fichier fname et
+    l’histogramme de l’image sous la forme de deux colonnes (la première colonne contiendra les valeurs
+    de 0 à max_value, la seconde les données de l’histogramme correspondant)
+ ***********************/
+ void pgm_write_histogram(const char* fname , pgm_t* image){
+    FILE* F = fopen(fname,"w");
+    if(F == NULL){
+        fprintf(stderr,"erreur lors de la l'ouverturer du Fichier");
+        exit(EXIT_FAILURE);
+    }
+    unsigned int* histogram = pgm_get_histrogram(image);
+    for(int i=0;i<image->max_value;i++){
+        fprintf(F,"%d %u\n",i+1,histogram[i]);
+    }
+    fclose(F);
+ }
 int main(void) {
     // Exemple d'utilisation pour le format ASCII
     pgm_t* image = pgm_read_asc("eye_s_asc.pgm");
@@ -259,6 +290,8 @@ int main(void) {
     //test du la lecture depuis un fichier binaire;
     pgm_t* image_bin = pgm_read_bin("eye_s_bin.pgm");
     pgm_write_asc("eye_s_asc_from_bin.pgm",image_bin);
+
+    pgm_write_histogram("eye_s_asc_hist.txt",image);
 
 
     // Liberation de la memoire alloué 
