@@ -3,7 +3,7 @@
 
 int main(void) {
     // Exemple d'utilisation pour le format ASCII
-    pgm_t* image = pgm_read_asc("eye_s_asc.pgm");
+    pgm_t* image = pgm_read_asc("../eye_s_asc.pgm");
     pgm_t* image_neg = NULL;
     //test de pgm_negative
     pgm_negative(image, &image_neg);

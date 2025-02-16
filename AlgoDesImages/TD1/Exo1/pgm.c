@@ -4,8 +4,8 @@
 pgm_t* pgm_alloc(unsigned int height, unsigned int width, unsigned int max_value) {
     pgm_t* img = (pgm_t*) malloc(sizeof(pgm_t));
     if (img == NULL) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour l'image.\n");
-        exit(EXIT_FAILURE);
+        fprintf(stderr, "Erreur d'allocation mémoire pour l'image pgm.\n");
+        return NULL;
     }
     img->height = height;
     img->width = width;
@@ -15,7 +15,8 @@ pgm_t* pgm_alloc(unsigned int height, unsigned int width, unsigned int max_value
     if (img->pixels == NULL) {
         fprintf(stderr, "Erreur d'allocation mémoire pour les lignes.\n");
         free(img);
-        exit(EXIT_FAILURE);
+        return NULL;
+
     }
 
     for (unsigned int i = 0; i < height; i++) {
@@ -28,28 +29,28 @@ pgm_t* pgm_alloc(unsigned int height, unsigned int width, unsigned int max_value
             }
             free(img->pixels);
             free(img);
-            exit(EXIT_FAILURE);
+            return NULL;
+
         }
     }
 
-    // Initialisation (optionnelle) : on peut initialiser les pixels à max_value
     for (unsigned int i = 0; i < height; i++) {
         for (unsigned int j = 0; j < width; j++) {
             img->pixels[i][j] = (unsigned char) max_value;
         }
     }
-
     return img;
 }
 
-void pgm_free(pgm_t* image) {
-    if (image == NULL)
+void pgm_free(pgm_t** image) {
+    if ((*image) == NULL)
         return;
-    for (unsigned int i = 0; i < image->height; i++){
-        free(image->pixels[i]);
+    for (unsigned int i = 0; i < (*image)->height; i++){
+        free((*image)->pixels[i]);
     }
-    free(image->pixels);
-    free(image);
+    free((*image)->pixels);
+    free((*image));
+    *image = NULL;
 }
 
 /* *******************************
@@ -225,7 +226,7 @@ void pgm_extract(const char* fname, pgm_t* image, unsigned int dx, unsigned int 
             }
         }
         pgm_write_asc(fname, temp);
-        pgm_free(temp);
+        pgm_free(&temp);
     }
 }
 

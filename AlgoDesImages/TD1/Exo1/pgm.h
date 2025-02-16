@@ -16,7 +16,7 @@
 
     pgm_t* pgm_alloc(unsigned int height, unsigned int width, unsigned int max_value);
 
-    void pgm_free(pgm_t* image); 
+    void pgm_free(pgm_t** image); 
 
     pgm_t* pgm_read_asc(const char* fname);
 
