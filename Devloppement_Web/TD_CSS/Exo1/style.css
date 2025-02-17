@@ -1,0 +1,47 @@
+body{
+    background-color: #ffdd99;
+    font-family: Palatino,serif;
+
+}
+p{
+    font-size: 15px;
+}
+p:first-of-type::first-letter{
+    font-size: 50px;
+}
+
+h1{
+    color: #661400;
+    text-align: center;
+    text-transform: capitalize;
+    
+}
+h2{
+    color: #b34700;
+    font-variant: small-caps;
+
+}
+
+section:last-of-type{
+    background-color: #661400;
+    color: #ffffff;
+}
+
+section:last-of-type li::marker {
+    content: url(check-white.svg);
+}
+
+section:last-of-type h2 {
+    color: white;
+}
+
+li::marker{
+    content: url(check.svg);
+
+}
+
+span{
+    text-transform: capitalize;
+    font-style: italic;
+}
+
