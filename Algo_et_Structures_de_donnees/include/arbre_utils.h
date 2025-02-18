@@ -31,4 +31,6 @@
 
     void affichage_indentation(arbre_t A);
 
+    arbre_t arbre_pe(int n);
+
 #endif

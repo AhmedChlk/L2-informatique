@@ -111,3 +111,21 @@ void affichage_indentation_rec (arbre_t A , int i , int hauteur_racine){
 void affichage_indentation(arbre_t A){
     affichage_indentation_rec(A,0,calculer_hauteur(A));
 }
+
+arbre_t arbre_pe(int n){
+    if (n==0) return NULL;
+    int ng = n/2;
+    int nd = n - ng -1;
+    int x;
+    printf("entrez une valeur svp : ");
+    scanf("%d",&x);
+    arbre_t t  = create_node(x);
+    t->fg = arbre_pe(ng);
+    t->fd = arbre_pe(nd);
+    return t;
+}
+
+void print_node(noeud_t* n){
+    printf("la valeur du noeud : %d\n"n->val);
+    
+}
