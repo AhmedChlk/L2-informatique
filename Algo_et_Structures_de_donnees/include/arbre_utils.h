@@ -32,5 +32,8 @@
     void affichage_indentation(arbre_t A);
 
     arbre_t arbre_pe(int n);
+    void print_node(noeud_t* n);
+    noeud_t* recherche_ABR (arbre_t A,int data);
+
 
 #endif

@@ -125,7 +125,22 @@ arbre_t arbre_pe(int n){
     return t;
 }
 
+noeud_t* recherche_ABR (arbre_t A,int data){
+    if(A==NULL) return NULL;
+    if (A->val == data){
+        return A;
+    }
+    if(data < A->val){
+        return recherche_ABR(A->fg,data);
+    }else{
+        return recherche_ABR(A->fd,data);
+
+    }
+}
 void print_node(noeud_t* n){
-    printf("la valeur du noeud : %d\n"n->val);
-    
+    if(n == NULL){
+        printf("noeud vide \n");
+        return;
+    }
+    printf("la valeur du noeud : %d\n",n->val);
 }
