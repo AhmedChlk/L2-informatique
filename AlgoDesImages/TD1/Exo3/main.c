@@ -2,7 +2,7 @@
 #include"jpeg.h"
 int main(){
     pgm_t* img = pgm_read_asc("eye_s_asc.pgm");
-    double zigzag[N*N];
+    int zigzag[N*N];
     double bloc[8][8];
     pgm_extract_blk(img,bloc,0,0);
     for(int i=0;i<8;i++){
@@ -36,9 +36,12 @@ int main(){
     pgm_quantify(bloc,Q);
     pgm_zigzag(bloc,zigzag);
     for(int i=0;i<N*N;i++){
-        printf("%lf \n",zigzag[i]);
+        printf("%d ",zigzag[i]);
     }
+    printf("\n");
     FILE* f = fopen("compression_rle.txt","w");
     pgm_rle(f,zigzag);
+    pgm_to_jpeg(img,"eye_s.txt");
+    fsize("eye_s.txt");
     return 0;
 }

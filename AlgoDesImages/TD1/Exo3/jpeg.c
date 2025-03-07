@@ -58,11 +58,10 @@ void pgm_quantify(double bloc[N][N], int Q[N][N]){
     }
 }
 
-void pgm_zigzag(double bloc[N][N], double zigzag[N*N]) {
+void pgm_zigzag(double bloc[N][N], int zigzag[N*N]) {
     int row = 0, col = 0;
-    
     for (int k = 0; k < N * N; k++) {
-        zigzag[k] = bloc[row][col];
+        zigzag[k] = (int)bloc[row][col];
         if ((row + col) % 2 == 0) { 
             if (col == N - 1) { 
                 row++; 
@@ -83,7 +82,7 @@ void pgm_zigzag(double bloc[N][N], double zigzag[N*N]) {
     }
 }
 
-void pgm_rle(FILE *fd, double zgzg[N*N]){
+void pgm_rle(FILE *fd, int zgzg[N*N]){
     int i = 0;
     
     while (i < N*N) {
@@ -94,14 +93,55 @@ void pgm_rle(FILE *fd, double zgzg[N*N]){
         }
 
         if (count >= 2) {
-            fprintf(fd, "@$%d$\n", count);
+            fprintf(fd, "@$%d$ ", count);
         }
-        fprintf(fd, "%lf\n", zgzg[i]);
+        fprintf(fd, "%d\n", zgzg[i]);
 
         i += count;
     }
 }
 
 void pgm_to_jpeg(pgm_t *in_pgm,char *fname){
-    
+    int Q[N][N] = {
+        {16, 11, 10, 16, 24, 40, 51, 61},
+        {12, 12, 14, 19, 26, 58, 60, 55},
+        {14, 13, 16, 24, 40, 57, 69, 56},
+        {14, 17, 22, 29, 51, 87, 80, 62},
+        {18, 22, 37, 56, 68, 109, 103, 77},
+        {24, 35, 55, 64, 81, 104, 113, 92},
+        {49, 64, 78, 87, 103, 121, 120, 101},
+        {72, 92, 95, 98, 112, 100, 103, 99}
+    };
+    FILE* F = fopen(fname,"w");
+    if(F == NULL){
+        fprintf(stderr,"Erreur lors de l'ouverture du fichier %s\n",fname);
+        return;
+    }
+    fprintf(F,"%s\n","JPEG");
+    fprintf(F,"%d %d\n",in_pgm->width,in_pgm->height);
+    for(int i=0;i + N<in_pgm->height;i+=N){
+        for(int j=0;j + N<in_pgm->width;j+=N){
+            double bloc[N][N];
+            pgm_extract_blk(in_pgm,bloc,i,j);
+            pgm_dct(bloc);
+            pgm_quantify(bloc,Q);
+            int zigzag[N*N];
+            pgm_zigzag(bloc,zigzag);
+            pgm_rle(F,zigzag);
+        }
+    }
+    fclose(F);
+}
+
+int fsize(char *fname){
+    FILE* F = fopen(fname,"r");
+    if(F == NULL){
+        fprintf(stderr,"Erreur lors de l'ouverture du fichier %s\n",fname);
+        return -1;
+    }
+    fseek(F,0L,SEEK_END);
+    int size = ftell(F);
+    printf("la taille : %d\n",size);
+    fclose(F);
+    return size;
 }
