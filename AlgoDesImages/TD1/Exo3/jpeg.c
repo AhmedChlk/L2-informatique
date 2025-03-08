@@ -86,18 +86,20 @@ void pgm_rle(FILE *fd, int zgzg[N*N]){
     int i = 0;
     
     while (i < N*N) {
-        int count = 1;
-        
-        while ((i + count < N*N) && (zgzg[i] == zgzg[i + count])) {
-            count++;
+        if(zgzg[i] == 0){
+            int count = 1;
+            while ((i + count < N*N) && (zgzg[i] == zgzg[i + count])) {
+                count++;
+            }
+            if (count >= 2)
+                fprintf(fd, "@$%d$\n", count);
+            else
+                fprintf(fd, "%d\n", zgzg[i]);
+            i += count;
+        } else {
+            fprintf(fd, "%d\n", zgzg[i]);
+            i++;
         }
-
-        if (count >= 2) {
-            fprintf(fd, "@$%d$ ", count);
-        }
-        fprintf(fd, "%d\n", zgzg[i]);
-
-        i += count;
     }
 }
 
@@ -141,7 +143,85 @@ int fsize(char *fname){
     }
     fseek(F,0L,SEEK_END);
     int size = ftell(F);
-    printf("la taille : %d\n",size);
     fclose(F);
     return size;
+}
+
+void decode_rle_jpeg(const char* fname, int*** zgzg) {
+    FILE* F = fopen(fname, "r");
+    if (F == NULL) {
+        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", fname);
+        return;
+    }
+
+    char buffer[256];
+    if (fscanf(F, "%4s", buffer) != 1) {
+        fprintf(stderr, "Erreur de lecture du fichier %s\n", fname);
+        fclose(F);
+        return;
+    }
+
+    if (strcmp(buffer, "JPEG") != 0) {
+        fprintf(stderr, "Erreur : le fichier %s n'est pas un fichier JPEG\n", fname);
+        fclose(F);
+        return;
+    }
+
+    int width, height;
+    if (fscanf(F, "%d %d", &width, &height) != 2) {
+        fprintf(stderr, "Erreur de lecture des dimensions\n");
+        fclose(F);
+        return;
+    }
+
+    int nbr_blocs = (width * height + (N * N - 1)) / (N * N);
+    (*zgzg) = (int**)malloc(nbr_blocs * sizeof(int*));
+    if (*zgzg == NULL) {
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        fclose(F);
+        return;
+    }
+
+    for (int i = 0; i < nbr_blocs; i++) {
+        (*zgzg)[i] = (int*)malloc(N * N * sizeof(int));
+        if ((*zgzg)[i] == NULL) {
+            fprintf(stderr, "Erreur d'allocation mémoire\n");
+            fclose(F);
+            return;
+        }
+        memset((*zgzg)[i], 0, N * N * sizeof(int));
+    }
+
+    for (int i = 0; i < nbr_blocs; i++) {
+        printf("DEBUG i=%d\n", i);
+        int j = 0;
+
+        while (j < N * N) {
+            char val[10];
+            if (fscanf(F, "%s", val) != 1) {
+                fprintf(stderr, "Erreur de lecture des valeurs\n");
+                fclose(F);
+                return;
+            }
+
+            if (val[0] == '@') {
+                int count = 0;
+                if (sscanf(val, "@$%d$", &count) != 1) {
+                    fprintf(stderr, "Erreur de lecture du RLE\n");
+                    fclose(F);
+                    return;
+                }
+
+                for (int k = 0; k < count && j < N * N; k++) {
+                    (*zgzg)[i][j] = 0;
+                    j++;
+                }
+            } else {
+                (*zgzg)[i][j] = atoi(val);
+                j++;
+            }
+        }
+    }
+
+    fclose(F);
 }

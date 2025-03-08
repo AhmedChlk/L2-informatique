@@ -1,4 +1,3 @@
-# Makefile pour Exo3 c
 
 CC      = gcc
 CFLAGS  = -Wall -g -I../Exo1
@@ -20,7 +19,7 @@ pgm.o: ../Exo1/pgm.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(BIN) $(OBJS)
+	rm -f $(BIN) $(OBJS) *.txt
 
 run: $(BIN)
 	./$(BIN)
