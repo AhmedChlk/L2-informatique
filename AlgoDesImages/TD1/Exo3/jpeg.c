@@ -12,12 +12,11 @@ void pgm_extract_blk(pgm_t* inpgm, double bloc[N][N],int i,int j){
 }
 
 void pgm_dct(double bloc[N][N]) {
-    double DCT[N][N];  // Matrice pour stocker le résultat de la DCT
+    double DCT[N][N];  
     double Ci, Cj, somme;
 
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            // Détermination des coefficients de normalisation
             Ci = (i == 0) ? 1.0 / sqrt(2) : 1.0;
             Cj = (j == 0) ? 1.0 / sqrt(2) : 1.0;
 
@@ -29,12 +28,10 @@ void pgm_dct(double bloc[N][N]) {
                              cos(((2 * y + 1) * j * M_PI) / (2.0 * N));
                 }
             }
-            // Applique le facteur de normalisation et le coefficient
             DCT[i][j] = (2.0 / N) * Ci * Cj * somme;
         }
     }
 
-    // Copie le résultat dans le bloc d'entrée
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             bloc[i][j] = DCT[i][j];
