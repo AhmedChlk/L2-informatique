@@ -16,10 +16,10 @@ void analyse_frequentiel(const char *message, int taille){
 
 int calcul_inversible(int a){
     int i;
-    for(i=0;i<M;i++){
+    for(i=1;i<M;i++){
         if((a*i)%M == 1){
             return i;
-        }
+        }   
     }
     return -1;
 }
@@ -29,7 +29,6 @@ int normalisation(int n){
 }
 
 void resolution_systeme(char lettre_claire1, char lettre_chiffree1, char lettre_claire2, char lettre_chiffree2,int *a, int *b){
-    printf("%d\n",calcul_inversible(((lettre_claire1 - lettre_claire2)+M)%M));
     if(calcul_inversible(((lettre_claire1 - lettre_claire2)+ M) % M) == -1){
         printf("Le systeme n'a pas de solution\n");
         return;

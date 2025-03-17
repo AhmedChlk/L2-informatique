@@ -289,4 +289,72 @@ void postfixe_rec(arbre_t root){
     }
 }
 
+int est_tas(int tab[], int n) {
+    for (int i = 0; i <= (n - 2) / 2; i++) {  // Vérifier tous les parents
+        if (2 * i + 1 < n && tab[i] < tab[2 * i + 1]) return 0;  // Fils gauche
+        if (2 * i + 2 < n && tab[i] < tab[2 * i + 2]) return 0;  // Fils droit
+    }
+    return 1;  // C'est un tas
+}
+
+void monter_tas(int tab[], int i, int valeur) {
+    int x = tab[i] + valeur;  
+    while (i > 0) {  
+        int papa = (i - 1) / 2;
+        if (tab[papa] >= x) break;
+
+        tab[i] = tab[papa];
+        i = papa;
+    }
+    tab[i] = x;  
+}
+
+
+/*
+input tableau d'entiers
+output Tri de Tab pas Tas
+i <= n/2
+*/
+void descendre_tas(int tab[], int n, int i) {
+    int x = tab[i];  
+    int j = 2 * i + 1;  // Premier enfant (fils gauche)
+
+    while (j < n) {  // Vérifier qu'il y a au moins un enfant
+        // Vérifier si le fils droit existe et est plus grand que le fils gauche
+        if (j + 1 < n && tab[j + 1] > tab[j]) {  
+            j++;  // Aller au plus grand enfant
+        }
+
+        // Si la valeur actuelle est plus grande que l'enfant, on arrête
+        if (x >= tab[j]) break;
+
+        // Descendre la valeur du plus grand enfant
+        tab[i] = tab[j];  
+        i = j;  // Mettre `i` à la position du fils choisi
+        j = 2 * i + 1;  // Calculer le prochain fils gauche
+    }
+
+    tab[i] = x;  // Placer la valeur `x` à sa position finale
+}
+
+/*
+nous avons construit un TAS *
+nous allons le trier
+*/
+void Tri_par_Tas(int tab[], int n) {
+    if (n > 1) {
+        int temp = tab[n - 1];
+        tab[n - 1] = tab[0];
+        tab[0] = temp;
+
+        descendre_tas(tab, n - 1, 0);  
+
+        Tri_par_Tas(tab, n - 1);
+    }
+}
+
+BFS_binaire()
+
+
+
 

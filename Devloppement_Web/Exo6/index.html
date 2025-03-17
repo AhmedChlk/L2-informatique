@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Une liste de Fruits</h1>
+    <h2>Enumération</h2>
+    <p id="enum"></p>
+    <h2>Enumération Inversée</h2>
+    <p id="enum_inv"></p>
+    <h2>Liste</h2>
+    <ul id="liste"></ul>
+    <button id="push">Push</button>
+    <button id="pop">Pop</button>
+    <button id="shift">Shift</button>
+    <button id="reverse">Reverse</button>
+
+    
+    <script>
+        var tab = ["poire", "raisin", "orange", "fruit"];
+
+        function updateDisplay() {
+            // Effacer le contenu avant d'afficher à nouveau
+            document.getElementById("enum").textContent = "";
+            document.getElementById("enum_inv").textContent = "";
+            document.getElementById("liste").innerHTML = "";
+
+            // Enumération normale
+            tab.forEach(element => document.getElementById("enum").textContent += element + " ");
+
+            // Enumération inversée avec une copie du tableau
+            [...tab].reverse().forEach(element => document.getElementById("enum_inv").textContent += element + " ");
+
+            // Remplir la liste <ul>
+            tab.forEach(element => {
+                let new_li = document.createElement("li");
+                new_li.textContent = element;
+                document.getElementById("liste").appendChild(new_li);
+            });
+        }
+
+        updateDisplay();
+
+        document.getElementById("push").addEventListener("click", () => {
+            let new_element = prompt("Entrez un nouvel élément:");
+            if (new_element) { 
+                tab.push(new_element);
+                updateDisplay();
+            }
+        });
+        document.getElementById("pop").addEventListener("click", () => {
+                tab.pop();
+                updateDisplay();
+        });
+
+        document.getElementById("shift").addEventListener("click", () => {
+                tab.shift();
+                updateDisplay();
+        });
+
+        document.getElementById("reverse").addEventListener("click", () => {
+                tab.reverse();
+                updateDisplay();
+        });
+    </script>
+</body>
+</html>

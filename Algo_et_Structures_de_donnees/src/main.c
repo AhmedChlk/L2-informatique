@@ -13,6 +13,20 @@ arbre_t construire_arbre_equilibre(int* tab, int debut, int fin) {
 
 
 int main(){
-    int tab_val[10] = {5,2,6,8,10,6,7,12,20,9};
+    int tab[8] = {1, 4,3, 1,2,7,10,11};
+    int n = 8;
+    for (int i = n / 2; i >= 0; i--) {
+        descendre_tas(tab,n,i);
+    }
+    for (int i = 0; i <n; i++) {
+        printf("%d ",tab[i]);
+    }
+    printf("\n");
+    Tri_par_Tas(tab,n);
+    printf("apres le Tri : \n");
+    for (int i = 0; i <n; i++) {
+        printf("%d ",tab[i]);
+    }
+    printf("\n");
 
 }   

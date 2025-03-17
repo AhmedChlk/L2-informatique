@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page avec Articles</title>
+    <style>
+      body{
+          margin:0px;
+          padding:0px;                             
+      }
+      
+      div.titre{
+          position:fixed;          
+          background-color: black;
+          top: 0;
+          left: 10%;
+          margin-right: 10%;
+          width: 80%;
+          height:150px;
+          text-align: center;
+          z-index: 1;
+          color: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      h1{
+          text-align: center;
+          text-transform: uppercase;
+      }
+      
+      nav {
+	  display: flex;
+          flex-direction: row;
+	  position: sticky;
+          top: 150px;	  
+          margin-left: calc(max(50% - 140px,0px));                  
+	  padding:0px;         
+          height:50px;
+	  z-index:2;
+      }
+      
+      main {
+          font-family: Arial, sans-serif;          
+          margin: 10%;
+          margin-top: 200px;
+          padding: 0;
+          background-color: #f4f4f4;
+      }
+
+      .articles {
+          background-color: white;
+          border: 1px solid #ccc;
+          margin: 10px;
+          padding: 20px;
+          border-radius: 5px;
+          display: block;
+      }
+
+      .articles h2 {
+          margin-top: 0;         
+      }
+
+      .articles p {
+          line-height: 1.5;
+      }
+
+      div#menu1,div#menu2 {	  
+	  width:170px ;
+	  padding:0 ;
+	  height:50px;
+	  background-color:blue;
+	  color:white;
+	  z-index:1;
+          display:flex;
+	  vertical-align:middle;          
+	  align-items:center;
+          justify-content: space-evenly;
+      }
+      div#menu1 {left:50px;}
+      div#menu2 {left:200px;}
+
+      div#sous-menu1, div#sous-menu2 {	  	  
+	  margin: 0; 
+	  padding : 10px; 	  	  
+	  background-color:cyan;	  
+          color:darkblue;
+	  z-index:2;
+          display:flex;
+          flex-direction: column;
+	  justify-content: space-evenly;
+          align-items: center;
+      }
+      div#sous-menu1 {left:50px;}
+
+      div#sous-menu2 {left:200px;}
+      
+      p.menu1, p.menu2{
+	  margin: 5px;
+	  display:block;         
+      }
+      .div-pre{
+          float:left;          
+          margin:10px;
+          font-size:x-small;
+      }
+
+      .div-pre2{
+          margin:10px;
+          float:right;          
+          font-size:x-small;
+      }
+      p.menu1:hover, p.menu2:hover{
+          background:lightgrey;
+      }
+      div#sous-menu1,div#sous-menu2{
+        display: none;
+      }
+      div#menu1:hover + div#sous-menu1, 
+       div#menu2:hover + div#sous-menu2, 
+      div#container1:hover div#sous-menu1, 
+      div#container2:hover div#sous-menu2 {
+       display: flex;
+      } 
+
+
+    </style>
+  </head>
+  <body>
+    
+    
+    <nav>
+      <div class="menu1" id="container1">        
+        <div id="menu1"> <div> Nature  </div> </div>
+        <div id="sous-menu1" class="menu1"> 
+          <p class="menu1" id="select-lapin"> Lapin </p>
+          <p class="menu1" id="select-pomme"> Pomme </p>          	     
+        </div>        
+      </div>
+      <div class="menu2" id="container2"> 
+        <div class="menu2" id="menu2"> Blabla  </div>        
+        <div id="sous-menu2" class="menu2">
+          <p class="menu2" id="select-blabla"> Blabla</p>
+          <p class="menu2" id="select-blibli"> Blibli</p>
+          <p class="menu2" id="select-bloblo"> Bloblo</p>
+        </div>
+      </div>      
+    </nav>
+    <div class="titre">
+      <h1> Des articles avec du blabla </h1>
+    </div>
+    <main>    
+      <div class="articles" id="blabla">
+        <h2>Article 1</h2>                
+        <p>           bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        </p>
+        <div class="div-pre">
+          <pre>
+########  ##          ###    ########  ##          ###    ########  ##          ###    
+##     ## ##         ## ##   ##     ## ##         ## ##   ##     ## ##         ## ##   
+##     ## ##        ##   ##  ##     ## ##        ##   ##  ##     ## ##        ##   ##  
+########  ##       ##     ## ########  ##       ##     ## ########  ##       ##     ## 
+##     ## ##       ######### ##     ## ##       ######### ##     ## ##       ######### 
+##     ## ##       ##     ## ##     ## ##       ##     ## ##     ## ##       ##     ## 
+########  ######## ##     ## ########  ######## ##     ## ########  ######## ##     ## 
+          </pre>
+        </div>
+        <p>           bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+         </p>
+        <p>           bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        <p>                 
+      </div>
+
+      <div class="articles" id="blibli">
+        <h2>Article 2</h2>
+        <p>
+bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli
+        </p>
+
+        <div class="div-pre">
+          <pre>
+ ______   _       _____  ______   _       _____  ______   _       _____ 
+| |  | \ | |       | |  | |  | \ | |       | |  | |  | \ | |       | |  
+| |--| < | |   _   | |  | |--| < | |   _   | |  | |--| < | |   _   | |  
+|_|__|_/ |_|__|_| _|_|_ |_|__|_/ |_|__|_| _|_|_ |_|__|_/ |_|__|_| _|_|_ 
+
+                                                         </pre>
+        </div>
+        
+        <p>
+          bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli bli  bli bli bli
+        </p>
+      </div>
+      <div class="articles" id="bloblo">
+        <h2>Article 3</h2>
+        
+        <p>
+blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo
+        </p>
+        
+        <div class="div-pre2">
+          <pre>
+8 888888888o   8 8888             ,o888888o.     8 888888888o   8 8888             ,o888888o.     8 888888888o   8 8888             ,o888888o.     
+8 8888    `88. 8 8888          . 8888     `88.   8 8888    `88. 8 8888          . 8888     `88.   8 8888    `88. 8 8888          . 8888     `88.   
+8 8888     `88 8 8888         ,8 8888       `8b  8 8888     `88 8 8888         ,8 8888       `8b  8 8888     `88 8 8888         ,8 8888       `8b  
+8 8888     ,88 8 8888         88 8888        `8b 8 8888     ,88 8 8888         88 8888        `8b 8 8888     ,88 8 8888         88 8888        `8b 
+8 8888.   ,88' 8 8888         88 8888         88 8 8888.   ,88' 8 8888         88 8888         88 8 8888.   ,88' 8 8888         88 8888         88 
+8 8888888888   8 8888         88 8888         88 8 8888888888   8 8888         88 8888         88 8 8888888888   8 8888         88 8888         88 
+8 8888    `88. 8 8888         88 8888        ,8P 8 8888    `88. 8 8888         88 8888        ,8P 8 8888    `88. 8 8888         88 8888        ,8P 
+8 8888      88 8 8888         `8 8888       ,8P  8 8888      88 8 8888         `8 8888       ,8P  8 8888      88 8 8888         `8 8888       ,8P  
+8 8888    ,88' 8 8888          ` 8888     ,88'   8 8888    ,88' 8 8888          ` 8888     ,88'   8 8888    ,88' 8 8888          ` 8888     ,88'   
+8 888888888P   8 888888888888     `8888888P'     8 888888888P   8 888888888888     `8888888P'     8 888888888P   8 888888888888     `8888888P'  
+          </pre>
+        </div>
+        <p>
+blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo blo
+        </p>
+      </div>
+
+      <div class="articles" id="pomme">
+        <h2>Article 4</h2>
+       
+        <div class="div-pre">
+        <pre>
+                      OOOO
+                      OOOO        
+                      OO0         
+               OOOOOO  O  OOOOOOOO 
+           OOOOOOOOOOOO OOOOOOOOOOOO
+         OOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+        OOOOOOO  OOOOOOOOOOOOOOOOOOOOOO
+       OOOOOO  OOOOOOOOOOOOOOOOOOOOOOOOO
+      OOOOO  OOOOOOOOOOOOOOOOOOOOOOOOOOOO
+     OOOOO   OOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+     OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+     OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+     OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+      OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+       OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+        OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 
+         OOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+           OOOOOOOOOOOOOOOOOOOOOOOOO
+             OOOOOOOOOOOOOOOOOOOOO
+                OOOOOOO OOOOOOO
+        </pre>
+        </div>
+         <p> pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme 
+
+        </p>
+         <p> pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme  pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme 
+         </p>
+
+          <p> pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme pomme 
+        </p>
+      </div>
+
+      <div class="articles" id="lapin">
+        <h2>Article 5</h2>
+        
+        
+        <div  class="div-pre2">
+          <pre>
+
+                88
+              88888                  8 
+             88888                  888
+            88888        888888888bd88
+        888888       888888888888888
+       88888888   8888888888888888888
+      88888888888888888888888888888888
+       88888888888888888888888888888888
+           888888888888888888888888888888888888
+           888888888888888      8888888888  88888
+           888888                       888    88
+   8888888888                           888
+ 888888                                  888
+ 
+          </pre>
+        </div>
+      <p > lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin 
+
+        </p>
+      <p>
+         lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin lapin
+      </p>
+      </div>
+    </main>
+    
+
+  </body>
+</html>

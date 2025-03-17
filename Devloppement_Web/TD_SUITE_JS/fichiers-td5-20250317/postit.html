@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <style>
+      body{
+          margin:0;
+          margin-top:40px;          
+      }
+      h1{
+          text-align: center;
+      }
+      div.postit{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: 300px;
+          left: 300px;
+          color: red;      
+          background-image: url("./postit-jaune1.jpg");
+          background-repeat: no-repeat;
+          background-size: 250px 250px;
+          width:250px;
+          height:250px;
+          position:absolute;
+          z-index:2;
+      }
+      p.txtpostit{          
+          margin: 40px;
+          font-family: Bradley Hand, cursive;
+          font-size:larger;
+      }
+    </style>
+  </head>
+  <body id="body">
+    <h1> Ma page de Post-it </h1>
+    <form>
+        <input type="button" value="Nouveau Postit" id="bouton">
+    </form>
+    
+    <p id="pos"> position </p>
+    
+    <div id="postit0" class="postit">
+      <p class="txtpostit">
+        Penser à travailler mon cours de Théorie de l'information.
+      </p>
+    </div>
+
+
+  </body>
+</html>

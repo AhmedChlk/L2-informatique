@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <style>
+
+      body{
+          /*margin: 0px;*/
+	  
+          display:flex;
+          align-items: center;
+      }
+
+      main{
+	  margin-left:auto;
+	  margin-right:auto;
+          /*margin-left: 300px;*/
+          align-items: center;
+	  width: 650px;
+      }
+      h1{
+          text-align:center;
+      }
+      div{
+          position: absolute;
+          border: thick solid white; 
+      }
+      div#d0{
+          left: 30px;
+          top: 40px;
+      }
+      div#d1{
+          left: 240px;
+          top: 40px;
+      }
+      div#d2{
+          left: 450px;
+          top: 40px;
+      }
+      div#d3{
+          left: 30px;
+          top: 250px;
+      }
+      div#d4{
+          left: 240px;
+          top: 250px;
+      }
+      div#d5{
+          left: 450px;
+          top: 250px;
+      }
+      img{
+          width: 200px;
+          height: 200px;	  
+      }
+      div#container{
+	  
+	  margin-top: 0px;	  
+	  padding:0;
+      }
+      nav{
+          display:flex;
+          justify-content: center;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <main>
+      <h1> Puzzle </h1>
+      
+    <nav>
+      
+    <form>
+      <input type="button" value="Echanger" id="exch">
+      <input type="button" value="Tourner" id="turn">
+    </form> 
+    </nav>
+    
+    <div id="container">
+      <div id="d0" >
+	<img data-pos="0" data-orientation="0" src="piece0.png">
+      </div>
+      <div id="d1">
+        <img data-pos="1" data-orientation="0" src="piece1.png">
+      </div>
+      <div id="d2">
+        <img data-pos="2" data-orientation="0" src="piece2.png">
+      </div>
+      <div id="d3">
+        <img data-pos="3" data-orientation="0" src="piece3.png">
+      </div>
+      <div id="d4">
+        <img data-pos="4" data-orientation="0" src="piece4.png">
+      </div>
+      <div id="d5">
+        <img data-pos="5" data-orientation="0" src="piece5.png">
+      </div>
+    </div>
+    </main>
+
+  </body>
+</html>

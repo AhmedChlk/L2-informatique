@@ -56,7 +56,11 @@ void prefixe_rec(arbre_t racine);
 void infixe_rec(arbre_t racine);
 void postfixe_rec(arbre_t root);
 
-
+// verifier que un tableau est un tas 
+int est_tas(int tab[],int n);
+void monter_tas(int tab[],int i, int valeur);
+void descendre_tas(int tab[], int n, int i);
+void Tri_par_Tas(int tab[],int n);
 
 
 #endif
