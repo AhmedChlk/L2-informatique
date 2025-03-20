@@ -352,9 +352,55 @@ void Tri_par_Tas(int tab[], int n) {
         Tri_par_Tas(tab, n - 1);
     }
 }
+void init_file(file_t *f) {
+    f->tete = 0;
+    f->queue = 0;
+    f->taille = 0;
+}
 
-BFS_binaire()
+// Vérifie si la file est vide
+int file_vide(file_t *f) {
+    return f->taille == 0;
+}
+
+// Vérifie si la file est pleine
+int file_pleine(file_t *f) {
+    return f->taille == N;
+}
+
+// Enfiler (ajouter un élément)
+void enfiler(file_t *f, arbre_t ptr) {
+    if (file_pleine(f)) {
+        printf("Erreur : La file est pleine !\n");
+        return;
+    }
+    f->t[f->queue] = ptr;
+    f->queue = (f->queue + 1) % N; // Avance en mode circulaire
+    f->taille++;
+}
+
+// Défiler (retirer un élément)
+arbre_t defiler(file_t *f) {
+    if (file_vide(f)) {
+        printf("Erreur : La file est vide !\n");
+        exit(EXIT_FAILURE);
+    }
+    arbre_t valeur = f->t[f->tete];
+    f->tete = (f->tete + 1) % N;
+    f->taille--;
+    return valeur;
+}
 
 
+void BFS_arbre_binaire(arbre_t racine){
+    file_t f;
+    init_file(&f);
+    enfiler(&f,racine);
+    while(!file_vide(&f)){
+        arbre_t ptr = defiler(&f);
+        printf("%d ",ptr->val);
+        if(ptr->fg != NULL) enfiler(&f,ptr->fg);
+        if(ptr->fd != NULL) enfiler(&f,ptr->fd);
 
-
+    }
+}

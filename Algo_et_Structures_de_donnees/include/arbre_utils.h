@@ -62,5 +62,22 @@ void monter_tas(int tab[],int i, int valeur);
 void descendre_tas(int tab[], int n, int i);
 void Tri_par_Tas(int tab[],int n);
 
+//
+typedef struct {
+    arbre_t t[N];
+    int tete;  
+    int queue; 
+    int taille;
+} file_t;
+
+void init_file(file_t* f);
+arbre_t defiler(file_t* f);
+void enfiler(file_t *f, arbre_t ptr);
+int file_vide(file_t *f);
+int file_pleine(file_t *f);
+
+
+void BFS_arbre_binaire(arbre_t racine);
 
 #endif
+
